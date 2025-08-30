@@ -1,0 +1,57 @@
+const contactModel = require("../models/contactModel");
+const userModel = require("../models/userModel");
+const { joiUserSchema, joiContactSchema } = require("../util/joiSecure");
+const { createSecretToken } = require("../util/secretToken");
+const bcrypt = require('bcrypt');
+
+module.exports.signUp = async(req , res , next)=> {
+    let {email} = req.body;
+    // console.log(req.body);
+    let existingUser = await userModel.findOne({email});
+    if(existingUser){
+        return res.json({message: "User already exist" , success : false});
+    }
+    let info = req.body;
+    joiUserSchema.validate(info);
+    let newUser = await userModel.insertOne(req.body);
+    let token = createSecretToken(newUser._id);
+    res.cookie("token" , token , {
+        withCredentials : true,
+        httpOnly: false,
+    })
+    res.json({message : "User signed successfully" , success : true});
+    next();
+}
+
+module.exports.login = async(req , res , next) => {
+    let info = req.body;
+    let userExist = await userModel.findOne({email : info.email});
+    if(!userExist){
+        return res.json({message : "You are not authenticate" , success : false});
+    }
+
+    let auth =  bcrypt.compare(info.password , userExist.password);
+    if(!auth){
+        console.log(info.password);
+        return res.json({message : "You are authentication password is wrong" , success : false});
+    }
+    let token = createSecretToken(userExist._id);
+    res.cookie("token" , token , {
+        withCredentials : true, 
+        httpOnly: false
+    })
+    res.status(200).json({message : "You are aunthenticate" , success: true});
+    next();
+}
+
+module.exports.contact = async(req , res)=> {
+    let info = req.body;
+    joiContactSchema.validate(info);
+    let contactInfo = await contactModel.insertOne(info);
+    if(contactInfo){
+res.json({message: "Your query submitted successfully" , success : true});
+    }else{
+        res.json({message : "There is issue in submitting query ,please try later" , succes: false});
+    }
+    
+}
