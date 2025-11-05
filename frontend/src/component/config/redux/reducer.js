@@ -13,6 +13,7 @@ const initialState = {
     itemsStatus: false,
      cartItems: [],
      cartItemsStatus: false,
+     cartCount: 0,
 }
 
 export const authSlice = createSlice({
@@ -79,7 +80,8 @@ export const authSlice = createSlice({
         })
         .addCase(showCart.fulfilled , (state , action) => {
             state.cartItems = action.payload.info,
-            state.cartItemsStatus = action.payload.status
+            state.cartItemsStatus = action.payload.status,
+            state.cartCount = action.payload.info.length
         })
     }
 })

@@ -2,6 +2,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit'
 import {client} from '../client.js'
 import Cookie from 'js-cookie';
 import { useDispatch } from 'react-redux';
+import { handleSuccess } from '../../../util/util.js';
 
 const token  = Cookie.get('token');
 const configHeaders = {
@@ -70,19 +71,6 @@ export const getAllProduct = createAsyncThunk(
     }    
 )
 
-export const AddToCart = createAsyncThunk(
-    "user/AddToCart",
-    async(element, thunkApi) => {
-        try {
-            console.log(element.id)
-            const response = await client.get(`/cart/product/${element.id}/user/add` , configHeaders ,  {withCredentials: true});
-            return thunkApi.fulfillWithValue(response.data);
-        } catch (error) {
-            console.log(error);
-            return thunkApi.rejectWithValue(error.response.message);
-        }
-    }
-)
 
 export const showCart = createAsyncThunk(
     "user/showCart",
@@ -90,12 +78,28 @@ export const showCart = createAsyncThunk(
         try {
 
             let res = await client.get(`/cart/show`, configHeaders ,  {withCredentials: true});
-
             return thunkApi.fulfillWithValue(res.data);
         } catch (error) {
             return thunkApi.rejectWithValue(error.response.data);
         }
           
+    }
+)
+
+export const AddToCart = createAsyncThunk(
+    "user/AddToCart",
+    async(element, thunkApi) => {
+        try {
+            console.log(element.id)
+            const response = await client.get(`/cart/product/${element.id}/user/add` , configHeaders ,  {withCredentials: true});
+            if(response.data.success){
+                thunkApi.dispatch(showCart());
+            };
+            return thunkApi.fulfillWithValue(response.data);
+        } catch (error) {
+            console.log(error);
+            return thunkApi.rejectWithValue(error.response.message);
+        }
     }
 )
 
@@ -108,6 +112,19 @@ export const incrCountCart = createAsyncThunk(
             const response =  await client.put(`/cart/update` , {cart: updatedCartArr} , configHeaders,  {withCredentials: true});
            
             return thunkApi.fulfillWithValue(response.data);
+        } catch (error) {
+            return thunkApi.rejectWithValue(error.response.data)
+        }
+    }
+)
+
+export const deleteCartProduct = createAsyncThunk(
+    "user/deleteCartProduct",
+    async (element, thunkApi) => {
+        try{
+          let res = await client.delete(`/cart/delete/${element.id}` , configHeaders ,  {withCredentials: true});
+          thunkApi.dispatch(showCart());
+            return thunkApi.fulfillWithValue(res.data);
         } catch (error) {
             return thunkApi.rejectWithValue(error.response.data)
         }

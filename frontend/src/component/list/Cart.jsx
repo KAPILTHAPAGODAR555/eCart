@@ -77,7 +77,7 @@ function Cart() {
 
       <h1 className='text-center fs-1 pb-3 fw-700 border-bottom' style={{fontFamily:'Monsterrat' , textDecorationLine:'underline', textDecorationColor:'lightgrey', textUnderlineOffset:'5px'}}>Cart</h1>
       <div className='row'>
-      <div className='col-12 col-md-12 col-lg-8'>
+      <div className='col-12 col-md-12 col-lg-12'>
 
        {cartItemsStatus && cartItems.map((element , index) => {
         
@@ -91,7 +91,7 @@ function Cart() {
        
      </div>
      
-     <div className='col-12 col-md-12 col-lg-4'>
+     <div className='col-12 col-md-12 col-lg-12 m-3' >
       {/* // <h4 className='text-center m-3'>Summary</h4> */}
       <div className='container '>
         <div className='d-flex flex-column align-items-center justify-content-center mt-2'>
@@ -100,40 +100,6 @@ function Cart() {
         <p className = 'fs-5 fw-600' style={{fontFamily: 'monsterrat' , color:'#053265ff'}}>or Continue Shopping</p>
         </Link>
         </div>
-        {/*
-      {cartItemsStatus && cartItems.map((element) => {
-           sum += (element.qty) * (element.price);
-          let qty = element.qty;
-         return qty == 0 ?  ('') : (
-          <div className='row'>
-            <div className='d-flex align-items-center justify-content-between'>
-              <p className='fs-5 fw-bold' style={{fontFamily: 'monsterrat', color:'#3e85efff'}}><strong>{element.product.name}</strong></p>
-              <p className='fs-4 fw-500' style={{fontFamily: 'monsterrat' , color:'#2D3748'}}>₹{element.product.price}</p>
-            </div>
-            <div className='d-flex align-items-center justify-content-between'>
-              <p className='fs-5' style={{fontFamily: 'monsterrat' , color:'#38A169'}}><strong>Total Quantity: </strong></p>
-             <p className = 'fs-5 fw-bold' style={{fontFamily: 'monsterrat' , color:'#38A169'}}>{element.qty + 1}</p>
-            </div>
-          </div>
-          
-         
-       
-        )
-      
-      })}
-      <div className='d-flex align-items-center justify-content-between'>
-        <p className='fs-3' style={{fontFamily: 'monsterrat' ,  color:'#1A202C'}}><strong>Total : </strong></p>
-        <p className = 'fs-3 fw-bold' style={{fontFamily: 'monsterrat' , color:'#053265ff'}}>₹{sum}</p>
-      </div>
-     {sum > 0 && <div className='d-flex flex-column align-items-center justify-content-center mt-2'>
-        <Link className='btn btn-primary w-50' to={`/buy/${user.id}`}>Checkout</Link>
-        <Link to='/' style={{textDecoration: 'none'}}>
-        <p className = 'fs-5 fw-600' style={{fontFamily: 'monsterrat' , color:'#053265ff'}}>or Continue Shopping</p>
-        </Link>
-        </div>
-} */}
-
-    
        </div>
      </div>
      </div>

@@ -26,39 +26,13 @@ function Product({element , cart}) {
   const auth = useSelector(state => state.auth); 
     const handleCart = async() => {
         try {           
-            let result = unwrapResult(await dispatch(AddToCart({id : element._id})))
-            let {status , message} = result;
-            if(status){
-              handleSuccess(message);
-                // setTimeout(() => {
-                //     window.location.reload();
-                // }, 3000);
-                return;
-            }else{
-                handleError(message);
-                return;
-            }
+            await dispatch(AddToCart({id : element._id}));
         } catch (error) {
-                handleError(error);
+                console.log(error);
                 return;
         }
     }
-    const handleSingle = async() => {
-       try {
-            let res = await axios.get(`http://localhost:8000/cart/show/${user.id}/` , {withCredentials: true});
-            let {status , info} = res.data;
-            if(status){
-                console.log(info);
-                isData(info);
-            }else{
-                console.log(info);
-                // handleError("Due to some reason not added");
-            }
-        } catch (error) {
-            console.log(error);
-            // handleError(error);
-        }
-    }
+   
   return (
     <Card sx={{ maxWidth: 500 , minHeight: 500, display: 'flex' , flexDirection: 'column' , }}>
       <CardMedia

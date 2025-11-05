@@ -5,6 +5,16 @@ import { useEffect , useState } from 'react'
 import { useNavigate } from 'react-router'
 import { ToastContainer , toast } from 'react-toastify'
 import {  useParams } from 'react-router';
+import Cookie from 'js-cookie'
+import { useDispatch, useSelector } from 'react-redux'
+import { showCart } from '../config/redux/action'
+import { handleError, handleSuccess } from '../../util/util'
+const token  = Cookie.get('token');
+const configHeaders = {
+    headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+    }
+}
 function Buy() {
   let {id} = useParams();
   const validate = (info)=> {
@@ -15,16 +25,7 @@ function Buy() {
     return 'success';
     
   }
-  const handleError = (error) => {
-          toast.error(error , {
-              position: 'bottom-left'
-          })
-      }
-      const handleSuccess = (message) => {
-          toast.success(message , {
-              position: 'bottom-left'
-          })
-      }
+  
   const [info , setInfo] = useState({
     address: "",
     city: "",
@@ -33,49 +34,14 @@ function Buy() {
     mode: "Cash",
     check : false
    });
-    const [user , isUser] = useState({
-        status: false,
-        id: 0
-    });
+
+    const {cartItems , cartItemsStatus , isLogin} = useSelector(state => state.auth);
+    const dispatch = useDispatch();
     let count = 1;
     let navigate = useNavigate();
-    // console.log(user , id);
     let [data , isData] = useState([]);
     useEffect(()=> {
-       const checkUser = async()=> {
-      let res= await axios.get( `http://localhost:8000/user/login`, {withCredentials: true});
-      let {status , user} = res.data;
-    //   console.log(id);
-    console.log(status , user._id)
-    if(status){
-      isUser({status:status, id:user._id});
-      if(user._id == id){
-        try {
-            let res = await axios.get(`http://localhost:8000/cart/show/${user._id}/` , {withCredentials: true});
-            let {status , info} = res.data;
-            if(status){
-                console.log(info);
-                isData(info);
-            }else{
-                console.log(info);
-                // handleError("Due to some reason not added");
-            }
-        } catch (error) {
-            console.log(error);
-            // handleError(error);
-        }
-      }else{
-         let res = await axios.get(`http://localhost:8000/product/buy/${id}/` , {withCredentials: true});
-            let {status , info} = res.data;
-            if(status){
-              isData(info);
-            }else{
-              console.log(info);
-            }
-      }
-    }
-  }
-    checkUser();
+      dispatch(showCart());
     },[])
     let sum =  0;
 
@@ -85,7 +51,7 @@ function Buy() {
         handleError(validate(info));
         return;
       }
-      let res = await axios.post(`http://localhost:8000/order/${user.id}/`, {data , info , sum}, {withCredentials : true} )
+      let res = await axios.post(`http://localhost:8000/order/${user.id}/`, {data , info , sum}, configHeaders , {withCredentials : true} )
       let {status} = res.data;
       if(status){
         handleSuccess('Order Placed Successfuly');
@@ -119,7 +85,7 @@ function Buy() {
     </tr>
   </thead>
   <tbody>
-{data.map((element) => {
+{cartItemsStatus && cartItems.map((element) => {
 sum += element.product.price * element.qty;
   return(
 <tr>
@@ -139,7 +105,7 @@ sum += element.product.price * element.qty;
   </tbody>
 </table>
 
-    {user.status &&  
+    {isLogin &&  
    
     <form className='mt-5' >
        <h1 className='text-center m-2'>Address Details</h1>

@@ -28,7 +28,9 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 import Cookie from 'js-cookie';
 import { useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { showCart } from './config/redux/action';
+
 const drawerWidth = 240;
 let navItems = ['About', 'Contact' , 'Signup'];
 
@@ -62,7 +64,7 @@ const navigationIcons = {
 export default function Nav(props) {
   const { window } = props;
   let navigate = useNavigate();
-  const {isLogin} = useSelector(state => state.auth); 
+  const {isLogin  , cartItemsStatus , cartCount} = useSelector(state => state.auth); 
   const [mobileOpen, setMobileOpen] = React.useState(false);
    const [user , isUser] = useState({
           status: false,
@@ -77,23 +79,10 @@ export default function Nav(props) {
              isLogin = false;
              navigate("/");
       }
+      const dispatch = useDispatch();
       const [ccart , setCart] = useState([]);
     useEffect(()=> {
-      const checkUser = async()=> {
-        let res= await axios.get( `http://localhost:8000/user/login`, {withCredentials: true});
-        let {status , user} = res.data;
-      //   console.log(id);
-      if(status){
-        isUser({status:status , id:user._id});
-        setCart(user.cart.length);}
-        else{
-          isUser({status:status , id:0});
-        }
-      }
-      checkUser();
-      if(user.status){
-        window.location.reload();
-      }
+      dispatch(showCart());
     }, [])
 //   if(user.status){
 //     console.log(user.status);
@@ -162,7 +151,7 @@ export default function Nav(props) {
             {navItems.map((item) => (
             <Link to={map[item]}>
               <Button key={item} sx={{ color: '#fff' }}>
-                 <StyledBadge badgeContent={item=='cart' && user.status ? ccart : 0} color="secondary">
+                 <StyledBadge badgeContent={item=='cart' && cartItemsStatus ? cartCount : 0} color="secondary">
                 {item == 'cart' ? <ShoppingCartIcon /> : navigationIcons[item]}
                 </StyledBadge>
            

@@ -6,7 +6,8 @@ import axios from 'axios';
 import { handleError, handleSuccess } from '../../util/util';
 import { configHeaders } from '../config/client';
 import { useDispatch } from 'react-redux';
-import { incrCountCart, showCart } from '../config/redux/action';
+import { deleteCartProduct, incrCountCart, showCart } from '../config/redux/action';
+import { unwrapResult } from '@reduxjs/toolkit';
 function CartProduct({element , func}) {
   const dispatch = useDispatch();
   let [count , setCount] = useState(element.qty);
@@ -27,14 +28,15 @@ function CartProduct({element , func}) {
   }
   const handleDeleteProduct = async() => {
         try { 
-          let res = await axios.delete(`http://localhost:8000/cart/delete/${element._id}` , configHeaders ,  {withCredentials: true});
-          let {status , message} = res.data;
-          console.log(res);
+          console.log("mf");
+      // let res = await axios.delete(`http://localhost:8000/cart/delete/${element._id}` , configHeaders ,  {withCredentials: true});
+          
+          let result = unwrapResult(await dispatch(deleteCartProduct({id: element._id})));
+          console.log(result);
+          let {status , message} = result;
           if(status){
             handleSuccess(message);
-            setTimeout(()=>{
-              window.location.reload();
-            },3000)
+            
             return;
           }else{
             handleError(message);
@@ -57,11 +59,15 @@ function CartProduct({element , func}) {
                     </div>
                     <div className='d-flex justify-content-between align-items-center flex-wrap'>
                     <div className='d-flex justify-content-between align-items-center flex-wrap mb-2'>
-                      <button className='py-2 px-3 fs-4 fw-700' disabled={count == 0 ? true : false} onClick={()=> {decrCount(element.product.name , element.product.price)}} style={{color:'#153360ff' ,cursor:'pointer' , border: '2px solid #38A169' , borderTopLeftRadius: '10px', borderBottomLeftRadius:'10px'}}>{'<<'}</button>
+                      <button className='py-2 px-3 fs-4 fw-700' disabled={count == 0 ? true : false} onClick={()=> { 
+                         decrCount(element.product.name , element.product.price)
+                        dispatch(incrCountCart({name: element.product.name , price: element.product.price , qty: count,id: element._id}))
+                        dispatch(showCart());
+                        }} style={{color:'#153360ff' ,cursor:'pointer' , border: '2px solid #38A169' , borderTopLeftRadius: '10px', borderBottomLeftRadius:'10px'}}>{'<<'}</button>
                       <div className=' py-2 px-3 fs-4 fw-700' style={{border: '1px solid #38A169'  , color:'#153360ff'}}>{count}</div>
                       <button className=' py-2 px-3 fs-4 fw-700' onClick={()=> {
                         incrCount(element.product.name , element.product.price)
-                        dispatch(incrCountCart({name: element.product.name , price: element.product.price , qty: element.qty ,id: element._id}))
+                        dispatch(incrCountCart({name: element.product.name , price: element.product.price , qty: count,id: element._id}))
                         dispatch(showCart());
                       }
                         } style={{color: '#153360ff' , cursor: 'pointer', border: '2px solid #38A169' , borderTopRightRadius: '10px', borderBottomRightRadius:'10px'}}>{'>>'}</button>
