@@ -28,6 +28,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 
 import Cookie from 'js-cookie';
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 const drawerWidth = 240;
 let navItems = ['About', 'Contact' , 'Signup'];
 
@@ -61,6 +62,7 @@ const navigationIcons = {
 export default function Nav(props) {
   const { window } = props;
   let navigate = useNavigate();
+  const {isLogin} = useSelector(state => state.auth); 
   const [mobileOpen, setMobileOpen] = React.useState(false);
    const [user , isUser] = useState({
           status: false,
@@ -72,6 +74,7 @@ export default function Nav(props) {
             if(token){
                 Cookie.remove('token');
             }
+             isLogin = false;
              navigate("/");
       }
       const [ccart , setCart] = useState([]);
@@ -91,8 +94,12 @@ export default function Nav(props) {
       if(user.status){
         window.location.reload();
       }
-    },[])
-  if(user.status){
+    }, [])
+//   if(user.status){
+//     console.log(user.status);
+//   navItems =  [  'order' , 'cart', 'About', 'Contact' , 'logout'];
+// }
+  if(isLogin){
     console.log(user.status);
   navItems =  [  'order' , 'cart', 'About', 'Contact' , 'logout'];
 }

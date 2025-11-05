@@ -2,8 +2,13 @@ import React from 'react'
 import { Typography, useScrollTrigger } from '@mui/material'
 import { Link , useNavigate} from 'react-router'
 import { ToastContainer, toast } from "react-toastify";
+import {useSelector , useDispatch} from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { useState } from 'react'
+import { login, register } from '../config/redux/action';
+import { reset } from '../config/redux/reducer';
+import { handleError, handleSuccess } from '../../util/util';
 function Signup() {
   const navigate = useNavigate();
   const handleFormError = (info)=> {
@@ -19,6 +24,8 @@ function Signup() {
     else if(!info.check)return {message:"Please read the terms and conditions" , success: false};
     return {message: "done" , success: true};
   }
+  const auth = useSelector((state) => state.auth)
+  const dispatch = useDispatch();
   const [info , setInfo] = useState({
     username: "",
     email : "",
@@ -27,16 +34,6 @@ function Signup() {
     password: "",
     check: false
   });
-  const handleError = (err)=> {
-    toast.error(err , {
-      position : 'bottom-left'
-    })
-  }
-  const handleSuccess = (message) => {
-    toast.success(message , {
-      position : 'bottom-left'
-    })
-  }
   const clickHandle = async(e)=> {
     e.preventDefault();
     let {message , success} = handleFormError(info);
@@ -44,23 +41,16 @@ function Signup() {
       handleError(message);
       return;
     }
-    // console.log(info)
     try {
-      let res = await axios.post('http://localhost:8000/user/signup' , info , {withCredentials : true});
-      let {message , success} = res.data;
-      if(success){
-        handleSuccess(message);
-        setTimeout(()=> {
+      const resultData = await dispatch(register(info));
+      const currentData = unwrapResult(resultData);
+      handleSuccess(currentData.message);
+       setTimeout(()=> {
           navigate("/");
         }, 3000);
-      }else{
-        handleError(message);
-        return;
-      }
-    
+      
     } catch (error) {
-      handleError(error);
-       return;
+      handleError(error.message);
     }
     setInfo({username: "",
     email : "",

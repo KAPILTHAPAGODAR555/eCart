@@ -2,6 +2,10 @@ import axios from 'axios';
 import React, { use, useState } from 'react'
 import { ToastContainer, toast } from "react-toastify";
 import { Link , useNavigate } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { login } from '../config/redux/action';
+import { handleError, handleSuccess } from '../../util/util';
 function Login() {
   const navigate = useNavigate();
   const handleFormError = (info)=> {
@@ -16,16 +20,9 @@ function Login() {
     email : "",
     password: ""
   })
-   const handleError = (err)=> {
-  toast.error(err , {
-    position : 'bottom-left'
-  })
- }
- const handleSuccess = (message)=> {
-  toast.success(message , {
-    position : 'bottom-left'
-  })
- }
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+   
   const handleClick = async(e) => {
     e.preventDefault();
     let {message , success} = handleFormError(info);
@@ -34,22 +31,13 @@ function Login() {
       return;
     }
     try {
-      let res = await axios.post('http://localhost:8000/user/login' , info , {withCredentials : true});
-      let {message , success} = res.data;
-      if(success){
-        handleSuccess(message)
-        setTimeout(()=> {
+      let currentResult = unwrapResult(await dispatch(login(info)));
+      handleSuccess(currentResult.message);
+         setTimeout(()=> {
            navigate("/");
         }, 3000);
-       
-      }else{
-        handleError(message)
-        return;
-      }
-      console.log(message);
-     
     } catch (error) {
-      handleError(error);
+      handleError(error.message);
     }
   }
 

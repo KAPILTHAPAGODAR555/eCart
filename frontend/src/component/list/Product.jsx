@@ -6,51 +6,33 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import pic from './pic.jpg'
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { Container } from '@mui/material';
 import { useEffect , useState } from 'react';
 import './list.css'
+import { configHeaders } from '../config/client';
+import { useDispatch, useSelector } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { AddToCart } from '../config/redux/action';
+import { handleError, handleSuccess } from '../../util/util';
 
 function Product({element , cart}) {
-  const handleError = (error) => {
-          toast.error(error , {
-              position: 'bottom-left'
-          })
-      }
-      const handleSuccess = (message) => {
-          toast.success(message , {
-              position: 'bottom-left'
-          })
-      }
-  const [user , isUser] = useState({
-          status: false,
-          id: 0
-      });
-    useEffect(()=> {
-      const checkUser = async()=> {
-        let res= await axios.get( `http://localhost:8000/user/login`, {withCredentials: true});
-        let {status , user} = res.data;
-      //   console.log(id);
-        isUser({status:status , id:user._id});
-        return;
-      }
-      checkUser();
-    },[])
+
+  console.log(configHeaders);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const auth = useSelector(state => state.auth); 
     const handleCart = async() => {
-        if(user.id == 0){
-            navigate("/signup");
-            return;
-        }
-        try {
-            let res = await axios.get(`http://localhost:8000/cart/product/${element._id}/add/${user.id}/` , {withCredentials: true});
-            let {status , message} = res.data;
+        try {           
+            let result = unwrapResult(await dispatch(AddToCart({id : element._id})))
+            let {status , message} = result;
             if(status){
-                handleSuccess(message);
-                setTimeout(() => {
-                    window.location.reload();
-                }, 3000);
+              handleSuccess(message);
+                // setTimeout(() => {
+                //     window.location.reload();
+                // }, 3000);
                 return;
             }else{
                 handleError(message);

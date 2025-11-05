@@ -19,30 +19,31 @@ import Buy from './component/list/Buy.jsx'
 import PageNotFound from './component/list/PageNotFound.jsx'
 import AdminFront from './component/admin/AdminFront.jsx'
 
+
 function App() {
   const [user , isUser] = useState({
         status: false,
         id: 0
     });
     const [ccart , setCart] = useState([]);
-  useEffect(()=> {
-    const checkUser = async()=> {
-      let res= await axios.get( `http://localhost:8000/user/login`, {withCredentials: true});
-      let {status , user} = res.data;
-    //   console.log(id);
-    if(status){
-       isUser({status:status , id:user._id});
-      setCart(user.cart.length);
-    }else{
-      isUser({status: false , id: 0});
-    }
+  // useEffect(()=> {
+  //   const checkUser = async()=> {
+  //     let res= await axios.get( `http://localhost:8000/user/login`, {withCredentials: true});
+  //     let {status , user} = res.data;
+  //   //   console.log(id);
+  //   if(status){
+  //      isUser({status:status , id:user._id});
+  //     setCart(user.cart.length);
+  //   }else{
+  //     isUser({status: false , id: 0});
+  //   }
      
-    }
-    checkUser();
-    if(user.status){
-      window.location.reload();
-    }
-  },[])
+  //   }
+  //   checkUser();
+  //   if(user.status){
+  //     window.location.reload();
+  //   }
+  // },[])
   
   return (
     <BrowserRouter>

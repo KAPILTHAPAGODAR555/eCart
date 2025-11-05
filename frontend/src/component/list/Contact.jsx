@@ -4,6 +4,10 @@ import { useEffect } from 'react';
 import { ToastContainer , toast } from 'react-toastify';
 import axios from 'axios'
 import Nav from '../Nav';
+import { useDispatch, useSelector } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { contactInfo } from '../config/redux/action';
+import { handleError, handleSuccess } from '../../util/util';
 
 function Contact() {
   const handleFormError = (info)=> {
@@ -17,6 +21,8 @@ function Contact() {
     else if(info.describe == "")return {message:"Please provide the issue description" , success: false};
     return {message: "done" , success: true};
   }
+  const auth = useSelector(state => state.auth);
+  const dispatch = useDispatch();
   const [info , setInfo] = useState({
     username: "",
     email: "",
@@ -25,16 +31,6 @@ function Contact() {
     issue: "No Default Selection",
     describe: ""
   })
-  const handleError = (err) => {
-    toast.error(err , {
-      position: 'bottom-left'
-    })
-  }
-  const handleSuccess = (message) => {
-    toast.success(message , {
-      position: 'bottom-left'
-    })
-  }
 
   const onHandle = async(e)=> {
     e.preventDefault();
@@ -46,16 +42,10 @@ function Contact() {
     // console.log(info);
    
       try {
-         let res = await axios.post('http://localhost:8000/user/contact' , info , {withCredentials : true});
-      let {message , success} = res.data;
-      if(success){
-        handleSuccess(message);
-      }else{
-        handleError(message);
-        return;
-      }
+        let currentResult = unwrapResult(await dispatch(contactInfo(info)));
+         handleSuccess(currentResult.message);
       } catch (error) {
-        handleError(error);
+        handleError(error.message);
         return;
       }
      setInfo({
