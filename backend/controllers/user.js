@@ -5,21 +5,23 @@ const { createSecretToken } = require("../util/secretToken");
 const bcrypt = require('bcrypt');
 
 module.exports.signUp = async(req , res , next)=> {
-    let {email} = req.body;
+    let {email , password} = req.body;
+    console.log(email);
     // console.log(req.body);
     let existingUser = await userModel.findOne({email});
     if(existingUser){
-        return res.json({message: "User already exist" , success : false});
+        return res.status(400).json({message: "User already exist" , success : false});
     }
-    let info = req.body;
+    let {info }= req.body;
     joiUserSchema.validate(info);
-    let newUser = await userModel.insertOne(req.body);
+    const hashPassword = await bcrypt.hash(password , 10);
+    let newUser = await userModel.insertOne({...info , email , password: hashPassword});
     let token = createSecretToken(newUser._id);
     res.cookie("token" , token , {
         withCredentials : true,
         httpOnly: false,
     })
-    res.json({message : "User signed successfully" , success : true});
+    res.status(200).json({message : "User signed successfully" , success : true});
     next();
 }
 
@@ -33,14 +35,14 @@ module.exports.login = async(req , res , next) => {
     let auth =  bcrypt.compare(info.password , userExist.password);
     if(!auth){
         console.log(info.password);
-        return res.json({message : "You are authentication password is wrong" , success : false});
+        return res.json({message : "You are authentication wrong" , success : false});
     }
     let token = createSecretToken(userExist._id);
     res.cookie("token" , token , {
         withCredentials : true, 
         httpOnly: false
     })
-    res.status(200).json({message : "You are aunthenticate" , success: true});
+    res.status(200).json({message : "You are aunthenticate" , success: true });
     next();
 }
 
@@ -49,7 +51,7 @@ module.exports.contact = async(req , res)=> {
     joiContactSchema.validate(info);
     let contactInfo = await contactModel.insertOne(info);
     if(contactInfo){
-res.json({message: "Your query submitted successfully" , success : true});
+    res.json({message: "Your query submitted successfully" , success : true});
     }else{
         res.json({message : "There is issue in submitting query ,please try later" , succes: false});
     }

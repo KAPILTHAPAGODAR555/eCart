@@ -1,10 +1,11 @@
 const express = require('express');
 const { cartAdd, updateCart, showCart, deleteCart } = require('../controllers/cart');
+const { verfiyToken } = require('../middleware/authMiddleware');
 const router = express.Router({mergeParams: true});
 
-router.get("/product/:productId/add/:userId/" ,cartAdd);
-router.put("/update/:userId/" ,  updateCart);
-router.get("/show/:id/" , showCart);
-router.delete("/show/:id/:userId" ,deleteCart)
+router.get("/product/:productId/user/add/" , verfiyToken ,  cartAdd);
+router.put("/update" , verfiyToken ,   updateCart);
+router.get("/show" , verfiyToken ,  showCart);
+router.delete("/delete/:id" , verfiyToken  , deleteCart)
 
 module.exports = router;
