@@ -33,7 +33,7 @@ module.exports.updateCart = async(req , res) => {
     // console.log(user);
     user.cart.map((element) => {
             if(element._id == cart.id){
-            element.qty += 1;
+            element.qty = cart.qty;
             }
     })
     

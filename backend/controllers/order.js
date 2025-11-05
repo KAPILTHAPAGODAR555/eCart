@@ -24,7 +24,8 @@ module.exports.orderTrack = async(req , res) => {
 module.exports.orderFetch = async(req , res) => {
     try {
          let prodInfo = [];
-    let {userId} = req.params;
+    let userId = req.user;
+    // let {userId} = req.params;
     let {data , info , sum} = req.body;
    
     for(let i = 0; i<data.length; i++){
