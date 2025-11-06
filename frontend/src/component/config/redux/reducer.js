@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllProduct, login, register, showCart } from "./action";
+import { getAllProduct, login, register, showCart, showProduct } from "./action";
 import Cookie from 'js-cookie';
 import { act } from "react";
 const token  = Cookie.get('token');
@@ -14,6 +14,8 @@ const initialState = {
      cartItems: [],
      cartItemsStatus: false,
      cartCount: 0,
+     showCartItem: {},
+     showCartItemStatus: false,
 }
 
 export const authSlice = createSlice({
@@ -82,6 +84,13 @@ export const authSlice = createSlice({
             state.cartItems = action.payload.info,
             state.cartItemsStatus = action.payload.status,
             state.cartCount = action.payload.info.length
+        })
+        .addCase(showProduct.fulfilled , (state , action) => {
+            state.showCartItem = action.payload,
+            state.showCartItemStatus = true
+        })
+        .addCase(showProduct.rejected , (state , action) => {
+            state.showCartItemStatus = false
         })
     }
 })

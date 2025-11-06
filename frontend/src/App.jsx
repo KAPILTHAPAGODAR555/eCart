@@ -21,29 +21,7 @@ import AdminFront from './component/admin/AdminFront.jsx'
 
 
 function App() {
-  const [user , isUser] = useState({
-        status: false,
-        id: 0
-    });
-    const [ccart , setCart] = useState([]);
-  // useEffect(()=> {
-  //   const checkUser = async()=> {
-  //     let res= await axios.get( `http://localhost:8000/user/login`, {withCredentials: true});
-  //     let {status , user} = res.data;
-  //   //   console.log(id);
-  //   if(status){
-  //      isUser({status:status , id:user._id});
-  //     setCart(user.cart.length);
-  //   }else{
-  //     isUser({status: false , id: 0});
-  //   }
-     
-  //   }
-  //   checkUser();
-  //   if(user.status){
-  //     window.location.reload();
-  //   }
-  // },[])
+  
   
   return (
     <BrowserRouter>
@@ -52,14 +30,14 @@ function App() {
      {/* <Nav len = {ccart} status={user.status}/> */}
      <Outlet />
      <Routes>
-     <Route path='/' element= {<Front   len = {ccart}/>} />
+     <Route path='/' element= {<Front />} />
      <Route path = '/show'  element = {<ShowPage />} />
      <Route path='/contact' element= {<Contact />} />
      <Route path='/about'   element= {<About />} />
      <Route path='/signup'  element={<Signup />} />
      <Route path='/login'   element={<Login />} />
      <Route path='/show/:id'element={<ShowPage  />} />
-     <Route path='/cart'    element={<ProtectedRoute><Cart user={user.status} id = {user.id}/></ProtectedRoute>} />
+     <Route path='/cart'    element={<ProtectedRoute><Cart /></ProtectedRoute>} />
      <Route path='/logout'  element={<Logout />} />
      <Route path='/buy' element={<Buy />} />
      <Route path = '/order' element={<Order />} /> 

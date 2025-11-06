@@ -9,7 +9,6 @@ import {useSelector , useDispatch} from 'react-redux'
 import OrderTracker from './OrderTracker';
 import { getAllProduct } from '../config/redux/action';
 function Front() {
-  const [data , setData] = useState([]);
    const {items , itemsStatus} = useSelector(state => state.auth)
    const  dispatch = useDispatch();
   useEffect(()=> {

@@ -4,12 +4,7 @@ import Cookie from 'js-cookie';
 import { useDispatch } from 'react-redux';
 import { handleSuccess } from '../../../util/util.js';
 
-const token  = Cookie.get('token');
-const configHeaders = {
-    headers: {
-        'Authorization' : `Bearer ${token ? token : ''}`
-    }
-}
+
 
 export const login = createAsyncThunk(
 "user/login" , 
@@ -75,6 +70,12 @@ export const getAllProduct = createAsyncThunk(
 export const showCart = createAsyncThunk(
     "user/showCart",
     async(_ , thunkApi) => {
+        const token  = Cookie.get('token');
+const configHeaders = {
+    headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+    }
+}
         try {
 
             let res = await client.get(`/cart/show`, configHeaders ,  {withCredentials: true});
@@ -89,8 +90,14 @@ export const showCart = createAsyncThunk(
 export const AddToCart = createAsyncThunk(
     "user/AddToCart",
     async(element, thunkApi) => {
+        const token  = Cookie.get('token');
+const configHeaders = {
+    headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+    }
+}
         try {
-            console.log(element.id)
+            console.log(token)
             const response = await client.get(`/cart/product/${element.id}/user/add` , configHeaders ,  {withCredentials: true});
             if(response.data.success){
                 thunkApi.dispatch(showCart());
@@ -107,6 +114,12 @@ export const incrCountCart = createAsyncThunk(
     "user/incrCount" , 
 
     async(updatedCartArr , thunkApi) => {
+        const token  = Cookie.get('token');
+const configHeaders = {
+    headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+    }
+}
         try {
             console.log("hello");
             const response =  await client.put(`/cart/update` , {cart: updatedCartArr} , configHeaders,  {withCredentials: true});
@@ -121,6 +134,12 @@ export const incrCountCart = createAsyncThunk(
 export const deleteCartProduct = createAsyncThunk(
     "user/deleteCartProduct",
     async (element, thunkApi) => {
+        const token  = Cookie.get('token');
+const configHeaders = {
+    headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+    }
+}
         try{
           let res = await client.delete(`/cart/delete/${element.id}` , configHeaders ,  {withCredentials: true});
           thunkApi.dispatch(showCart());
@@ -129,4 +148,24 @@ export const deleteCartProduct = createAsyncThunk(
             return thunkApi.rejectWithValue(error.response.data)
         }
     }
+)
+
+export const showProduct = createAsyncThunk(
+    "user/deleteCartProduct",
+    async (element, thunkApi) => {
+        const token  = Cookie.get('token');
+const configHeaders = {
+    headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+    }
+}
+    try{
+        let res = await client.get(`/product/show/${element.id}` , info ,  configHeaders , {withCredentials : true});
+        return thunkApi.fulfillWithValue(res.data);
+
+    }catch (error) {
+        return thunkApi.rejectWithValue(error.response.data);
+
+    }
+}
 )

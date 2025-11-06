@@ -20,46 +20,12 @@ const configHeaders = {
 }
 
 function Cart() {
-   const [user , isUser] = useState({
-        status: false,
-        id: 0
-    });
 
-    let navigate = useNavigate();
     const dispatch = useDispatch();
     const {cartItems , cartItemsStatus} = useSelector(state => state.auth);
-    // console.log(user , id);
-    let [data , isData] = useState([]);
-    let [cartArr , setCartArr] = useState([]);
-    // if(cartItemsStatus)setCartArr(cartItems)
     useEffect(()=> {
   dispatch(showCart());
     },[])
-    let sum = 0;
-    
-    const totalCount = async(qty , name , price, send) => {
-  const existingItemIndex = cartArr.findIndex(item => item.name === name);
-  if (existingItemIndex > -1) {
-    const updatedCartArr = cartArr.map((item, index) => {
-      if (index === existingItemIndex) {
-        return { ...item, qty: qty };
-      }
-      return item;
-    });
-   
-   if(send){ await axios.put(`http://localhost:8000/cart/update` , {cart: updatedCartArr} , configHeaders,  {withCredentials: true});}
-  
-    
-    setCartArr(updatedCartArr);
-  } else {
-    const newCartArr = [...cartArr, { name, qty,  price }];
-     if(send){ await axios.put(`http://localhost:8000/cart/update` , {cart : newCartArr} , configHeaders ,  {withCredentials: true});}
-    setCartArr(newCartArr);
-  }
-   
-      console.log(qty+1, name, price);
-  }
-  console.log(cartArr);
   return (
     // data.length == 0  || !user.status?  <div className='container flex-grow-1 mb-5'>
       !cartItemsStatus ?  <div className='container flex-grow-1 mb-5'>
@@ -84,7 +50,7 @@ function Cart() {
         return(
           <div className='col-12 col-md-12 col-lg-12 m-2'>
 
-            <CartProduct element={element} key={index} cart = {true} func={totalCount} />
+            <CartProduct element={element} key={index} cart = {true} />
           </div>
         )
        })}

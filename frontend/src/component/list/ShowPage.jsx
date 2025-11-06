@@ -10,11 +10,13 @@ import { ToastContainer, toast } from "react-toastify";
 import root from './root.png'
 import { useNavigate, Link } from 'react-router';
 import Nav from '../Nav';
+import { useSelector } from 'react-redux';
 function ShowPage() {
     let totalRating = 0;
     let ratingCount = 0;
     const isMedium = useMediaQuery('(max-width:990px)');
     const isPhone = useMediaQuery('(max-width: 1000px)')
+    const {isLogin} = useSelector(state => state.auth);
     let {id} = useParams();
     const [user , isUser] = useState({
         status: false,
@@ -166,7 +168,7 @@ function ShowPage() {
                             <li className='fs-6 mt-3' style={{fontFamily:'Roboto'}}><h6><i class="fa-solid fa-basket-shopping mx-2" style={{color:"#9C27B0"}}></i>Category: Fresh {info.category}</h6></li>
                         </ul>
                     </div>
-                    {user.status && <div className='rating-view mt-5'>
+                    {isLogin && <div className='rating-view mt-5'>
                         <h2 className='text-center'>Rate & Review</h2>
                         <form>
                             <div class="form-group">

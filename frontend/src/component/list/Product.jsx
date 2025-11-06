@@ -19,8 +19,6 @@ import { AddToCart } from '../config/redux/action';
 import { handleError, handleSuccess } from '../../util/util';
 
 function Product({element , cart}) {
-
-  console.log(configHeaders);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth); 
