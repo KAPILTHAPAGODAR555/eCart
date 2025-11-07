@@ -4,7 +4,7 @@ import Cookie from 'js-cookie';
 import { act } from "react";
 const token  = Cookie.get('token');
 const initialState = {
-    user: null,
+    id: null,
     isLogin: token ? true: false,
     message: "",
     isLoading: false,
@@ -42,7 +42,8 @@ export const authSlice = createSlice({
             state.message = action.payload.message,
             state.isLoading = false,
             state.isError = false,
-            state.isLogin = action.payload.success
+            state.isLogin = action.payload.success,
+            state.id= action.payload.id
            
         })
         .addCase(register.rejected , (state , action) => {
@@ -61,7 +62,8 @@ export const authSlice = createSlice({
             state.message = action.payload.message,
             state.isError = false,
             state.isLogin = action.payload.success,
-            state.isLoading = false
+            state.isLoading = false,
+            state.id= action.payload.id
         })
         .addCase(getAllProduct.pending , (state) => {
             state.itemsStatus = false,
@@ -84,10 +86,12 @@ export const authSlice = createSlice({
             state.cartItems = action.payload.info,
             state.cartItemsStatus = action.payload.status,
             state.cartCount = action.payload.info.length
+
         })
         .addCase(showProduct.fulfilled , (state , action) => {
-            state.showCartItem = action.payload,
-            state.showCartItemStatus = true
+            state.showCartItem = action.payload.data,
+            state.showCartItemStatus = true,
+            state.id= action.payload.id
         })
         .addCase(showProduct.rejected , (state , action) => {
             state.showCartItemStatus = false

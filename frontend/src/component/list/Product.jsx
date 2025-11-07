@@ -23,8 +23,14 @@ function Product({element , cart}) {
   const dispatch = useDispatch();
   const auth = useSelector(state => state.auth); 
     const handleCart = async() => {
-        try {           
-            await dispatch(AddToCart({id : element._id}));
+        try {    
+           let result = unwrapResult(await dispatch(AddToCart({id : element._id})));  
+           let {status: success , message} = result;  
+           setTimeout(() => {
+                if(success)handleSuccess(message);
+                else handleError(message);
+           }, 2000);   
+           
         } catch (error) {
                 console.log(error);
                 return;

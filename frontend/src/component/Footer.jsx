@@ -1,7 +1,9 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 function Footer() {
-  return (
+    const {isLogin} = useSelector(state => state.auth);
+  return ( 
     <div className='container-fluid mt-3' style={{backgroundColor: '#212121'}}>
         <div className='row mt-5 mb-2 p-3' style={{borderBottom : '2px solid gray'}}>
             <div className='col-12 col-md-6 col-lg-3'>
@@ -52,6 +54,7 @@ function Footer() {
             <span className='text-white'>Help Center</span>
         </div>
     </div>
+
   )
 }
 

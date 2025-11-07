@@ -6,6 +6,7 @@ import { handleSuccess } from '../../../util/util.js';
 
 
 
+
 export const login = createAsyncThunk(
 "user/login" , 
 async (user , thunkApi) => {
@@ -99,9 +100,7 @@ const configHeaders = {
         try {
             console.log(token)
             const response = await client.get(`/cart/product/${element.id}/user/add` , configHeaders ,  {withCredentials: true});
-            if(response.data.success){
                 thunkApi.dispatch(showCart());
-            };
             return thunkApi.fulfillWithValue(response.data);
         } catch (error) {
             console.log(error);
@@ -153,14 +152,17 @@ const configHeaders = {
 export const showProduct = createAsyncThunk(
     "user/deleteCartProduct",
     async (element, thunkApi) => {
-        const token  = Cookie.get('token');
+         const token  = Cookie.get('token');
 const configHeaders = {
     headers: {
         'Authorization' : `Bearer ${token ? token : ''}`
     }
 }
+     
     try{
-        let res = await client.get(`/product/show/${element.id}` , info ,  configHeaders , {withCredentials : true});
+       
+        let res = await client.get(`/product/show/${element.id}` ,  configHeaders , {withCredentials : true});
+       
         return thunkApi.fulfillWithValue(res.data);
 
     }catch (error) {
@@ -168,4 +170,49 @@ const configHeaders = {
 
     }
 }
+)
+
+export const addReview = createAsyncThunk(
+    "user/addReview", 
+    async(element , thunkApi) => {
+           const token  = Cookie.get('token');
+const configHeaders = {
+    headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+    }
+}
+
+try {
+        let res = await client.post(`/product/review/${element.id}`,  {
+            info: element.review
+        }, configHeaders ,  {withCredentials: true});
+        // console.log(res);
+        thunkApi.dispatch(showProduct({id: element.id}));
+        return thunkApi.fulfillWithValue(res.data);
+    
+} catch (error) {
+    return thunkApi.rejectWithValue(error.response.data);
+}
+
+    }
+)
+
+export const deleteReview = createAsyncThunk(
+    "user/deleteReview",
+    async (element , thunkApi) => {
+          const token  = Cookie.get('token');
+const configHeaders = {
+    headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+    }
+}
+try {
+        let res = await client.delete(`/product/${element.id}/review/${element.reviewId}/delete/` , configHeaders ,  {withCredentials: true})
+        thunkApi.dispatch(showProduct({id: element.id}));
+        return thunkApi.fulfillWithValue(res.data);
+} catch (error) {
+    return thunkApi.rejectWithValue(error.response.data);
+}
+        
+    }
 )
