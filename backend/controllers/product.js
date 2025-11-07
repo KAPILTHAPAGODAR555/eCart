@@ -8,17 +8,16 @@ const { joiReviewSchema } = require("../util/joiSecure");
 
 module.exports.addReview = async(req , res)=> {
     let {id} =  req.params;
-    let token = req.cookies.token;
-    let user =  await userInfo(token);
-    // console.log(user);
-    let info = req.body;
+    let user = req.user;
+    console.log(user);
+    let {info} = req.body;
     joiReviewSchema.validate(info);
    try {
     let review = await reviewModel.insertOne(info);
     review.author.push(user);
     review.save();
     let product = await productModel.findById(id);
-    let userRev = await  userModel.findById(user._id);
+    let userRev = await  userModel.findById(user);
     userRev.reviews.push(review);
     await userRev.save();
     product.reviews.push(review);
@@ -33,10 +32,9 @@ module.exports.addReview = async(req , res)=> {
 module.exports.deleteReview = async(req , res)=>{
 let productId = req.params.id;
 let reviewId = req.params.reviewId;
-let token = req.cookies.token;
-let user =await userInfo(token);
+let user = req.user;
 try {
-await userModel.findByIdAndUpdate(user._id , {$pull : {reviews: reviewId}});
+await userModel.findByIdAndUpdate(user , {$pull : {reviews: reviewId}});
 await productModel.findByIdAndUpdate(productId , {$pull : {reviews : reviewId}}) 
 await reviewModel.findByIdAndDelete(reviewId);
 res.json({message : "Successfully delete" , success: true});  
@@ -47,11 +45,12 @@ res.json({message : "Successfully delete" , success: true});
 
 module.exports.sendData = async(req , res)=> {
     let {id} = req.params;
+    let user = req.user;
     let data = await productModel.findById(id).populate({path: 'reviews' , 
         populate : {
             path: 'author',
             model: 'user'
         }
     });
-    res.json({data , success: true})
+    res.json({data , success: true , id: user})
 }

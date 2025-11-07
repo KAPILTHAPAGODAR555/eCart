@@ -3,8 +3,9 @@ const { addReview, deleteReview, sendData } = require('../controllers/product');
 const { joiReviewSchema } = require('../util/joiSecure');
 const router = express.Router({mergeParams: true});
 const Joi = require('joi');
+const { verfiyToken } = require('../middleware/authMiddleware');
 
-router.post("/review/:id", addReview);
-router.delete("/:id/review/:reviewId/delete/", deleteReview);
-router.get("/show/:id" , sendData);
+router.post("/review/:id", verfiyToken ,  addReview);
+router.delete("/:id/review/:reviewId/delete/", verfiyToken , deleteReview);
+router.get("/show/:id" , verfiyToken ,  sendData);
 module.exports = router;

@@ -12,7 +12,7 @@ try {
    let product = await productModel.findById(productId);
 let user = await userModel.findById(req.user);
 for(let i = 0; i<user.cart.length; i++){
-    if(productId == user.cart[i].product)return res.status(200).json({status: false , message: "Product alreday in the cart"}); 
+    if(productId == user.cart[i].product)return res.status(200).json({status: false, message: "Product alreday in the cart"}); 
 }
 user.cart.push({product , qty: 0});
 await user.save();

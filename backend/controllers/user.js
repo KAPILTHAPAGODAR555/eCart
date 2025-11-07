@@ -21,7 +21,7 @@ module.exports.signUp = async(req , res , next)=> {
         withCredentials : true,
         httpOnly: false,
     })
-    res.status(200).json({message : "User signed successfully" , success : true});
+    res.status(200).json({message : "User signed successfully" , success : true , id:newUser._id});
     next();
 }
 
@@ -42,7 +42,7 @@ module.exports.login = async(req , res , next) => {
         withCredentials : true, 
         httpOnly: false
     })
-    res.status(200).json({message : "You are aunthenticate" , success: true });
+    res.status(200).json({message : "You are aunthenticate" , success: true , id:userExist._id});
     next();
 }
 
@@ -53,7 +53,7 @@ module.exports.contact = async(req , res)=> {
     if(contactInfo){
     res.json({message: "Your query submitted successfully" , success : true});
     }else{
-        res.json({message : "There is issue in submitting query ,please try later" , succes: false});
+        res.json({message : "There is issue in submitting query ,please try later" , succes: false , });
     }
     
 }
