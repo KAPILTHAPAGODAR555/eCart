@@ -2,11 +2,13 @@ const orderModel = require("../models/orderModel");
 const userModel = require("../models/userModel");
 const { joiOrderSchema } = require("../util/joiSecure");
 module.exports.orderShow =  async(req , res)=> {
-    let {id} = req.params;
+    // let {id} = req.params;
+    let id = req.user;
+    console.log(id);
     try {
        let order = await orderModel.find({userId : id}).populate('tracking_history')
     // console.log(userId.cart);
-        return res.json({status : true , info: order});
+        return res.json({status : true , info: order.reverse()});
     } catch (error) {
        return res.json({status: false, info: error});
     }

@@ -3,8 +3,8 @@ const { orderShow, orderFetch, orderTrack } = require("../controllers/order");
 const { verfiyToken } = require("../middleware/authMiddleware");
 const router = express.Router({mergeParams: true});
 
-router.get("/show/:id/" , orderShow);
-router.post("/track/" , orderTrack);
+router.get("/show" , verfiyToken ,  orderShow);
+router.post("/track/" , verfiyToken ,  orderTrack);
 router.post("/" , verfiyToken ,  orderFetch);
 
 
