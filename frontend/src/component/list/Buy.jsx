@@ -7,8 +7,9 @@ import { ToastContainer , toast } from 'react-toastify'
 import {  useParams } from 'react-router';
 import Cookie from 'js-cookie'
 import { useDispatch, useSelector } from 'react-redux'
-import { showCart } from '../config/redux/action'
+import { placedOrder, showCart, singleProductBuy } from '../config/redux/action'
 import { handleError, handleSuccess } from '../../util/util'
+import { unwrapResult } from '@reduxjs/toolkit'
 const token  = Cookie.get('token');
 const configHeaders = {
     headers: {
@@ -35,13 +36,14 @@ function Buy() {
     check : false
    });
 
-    const {cartItems , cartItemsStatus , isLogin} = useSelector(state => state.auth);
+    const {cartItems , cartItemsStatus , isLogin , singleProductStatus , singleProduct} = useSelector(state => state.auth);
     const dispatch = useDispatch();
     let count = 1;
     let navigate = useNavigate();
     let [data , isData] = useState([]);
     useEffect(()=> {
-      dispatch(showCart());
+      if(id === 'cart')dispatch(showCart());
+      dispatch(singleProductBuy({id}));
     },[])
     let sum =  0;
 
@@ -51,8 +53,9 @@ function Buy() {
         handleError(validate(info));
         return;
       }
-      let res = await axios.post(`http://localhost:8000/order/${user.id}/`, {data , info , sum}, configHeaders , {withCredentials : true} )
-      let {status} = res.data;
+      // let res = await axios.post(`http://localhost:8000/order/${user.id}/`, {data , info , sum}, configHeaders , {withCredentials : true} )
+      let result =unwrapResult(await dispatch(placedOrder({data , info , sum})));
+      let {status} = result;
       if(status){
         handleSuccess('Order Placed Successfuly');
         setTimeout(()=> {
@@ -72,6 +75,7 @@ function Buy() {
    });
     }
   return ( 
+    
     <div className='container flex-grow-1 p-3'>
       <Nav />
       <h1 className='text-center fw-bold mb-4'>Order</h1>
@@ -85,7 +89,18 @@ function Buy() {
     </tr>
   </thead>
   <tbody>
-{cartItemsStatus && cartItems.map((element) => {
+{!singleProductStatus && cartItemsStatus && cartItems.map((element) => {
+sum += element.product.price * element.qty;
+  return(
+<tr>
+      <th scope="row">{count++}</th>
+      <td>{element.product.name}</td>
+      <td>{element.qty}</td>
+      <td>₹{element.product.price * element.qty}</td>
+    </tr>
+  )
+})}
+{singleProductStatus && singleProduct.map((element) => {
 sum += element.product.price * element.qty;
   return(
 <tr>
@@ -104,6 +119,8 @@ sum += element.product.price * element.qty;
     </tr>
   </tbody>
 </table>
+
+
 
     {isLogin &&  
    

@@ -5,6 +5,9 @@ import { useEffect  , useState } from 'react'
 import { useNavigate } from 'react-router'
 import Nav from '../Nav'
 import OrderTracker from './OrderTracker'
+import { useDispatch, useSelector } from 'react-redux'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { showOrders } from '../config/redux/action'
 
 function Order() {
   let trackMap = {
@@ -18,48 +21,18 @@ function Order() {
     'Processing' : '#6C757D', 
     'Delivered' :'#28A745'
   }
-   const [user , isUser] = useState({
-        status: false,
-        id: 0
-    });
-
     let navigate = useNavigate();
-    // console.log(user , id);
-    let [data , isData] = useState([]);
-    let [cartArr , setCartArr] = useState([]);
+    const {orders , ordersStatus} = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
     useEffect(()=> {
-       const checkUser = async()=> {
-      let res= await axios.get( `http://localhost:8000/user/login`, {withCredentials: true});
-      let {status , user} = res.data;
-    //   console.log(id);
-    console.log(status , user._id)
-    if(status){
-      isUser({status:status , id:user._id});
-        try {
-            let res = await axios.get(`http://localhost:8000/order/show/${user._id}/` , {withCredentials: true});
-            let {status , info} = res.data;
-            if(status){
-                console.log(info);
-                isData(info);
-            }else{
-                console.log(info);
-                // handleError("Due to some reason not added");
-            }
-        } catch (error) {
-            console.log(error);
-            // handleError(error);
-        }
-    }
-  }
-    checkUser();
+        dispatch(showOrders());
     },[])
-    let count = 1;
   return (
     <div className='flex-grow-1'>
       <Nav />
       <div className='container'>
         <h1 className='text-center my-4' style={{color:'#1976d2'}}>My Orders</h1>
-{data.map((element) => {
+{ordersStatus && orders.map((element) => {
 let DateString = element.createdAt.toString();
   return(
     <div className='container mb-4' style={{border: '2px solid blue' , borderRadius: '10px'}}>

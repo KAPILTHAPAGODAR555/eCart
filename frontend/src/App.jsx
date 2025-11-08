@@ -39,7 +39,7 @@ function App() {
      <Route path='/show/:id'element={<ShowPage  />} />
      <Route path='/cart'    element={<ProtectedRoute><Cart /></ProtectedRoute>} />
      <Route path='/logout'  element={<Logout />} />
-     <Route path='/buy' element={<Buy />} />
+     <Route path='/buy/:id' element={<Buy />} />
      <Route path = '/order' element={<Order />} /> 
      <Route path = '/admin' element={<AdminFront />} /> 
      <Route path = '/*' element={<PageNotFound />} />

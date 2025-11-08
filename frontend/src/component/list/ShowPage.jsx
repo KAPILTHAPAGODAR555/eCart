@@ -14,14 +14,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addReview, AddToCart, deleteReview, showProduct } from '../config/redux/action';
 import { handleSuccess } from '../../util/util';
 import { unwrapResult } from '@reduxjs/toolkit';
+import Footer from '../Footer';
 
 function ShowPage() {
     let totalRating = 0;
     let ratingCount = 0;
     const isMedium = useMediaQuery('(max-width:990px)');
     const isPhone = useMediaQuery('(max-width: 1000px)')
-    const {isLogin , showCartItem:info , showCartItemStatus , id: userId} = useSelector(state => state.auth);
-    console.log(userId);
+    const {isLogin , showCartItem:info , showCartItemStatus , id: userId  , isLoading} = useSelector(state => state.auth);
+    console.log("loading: " + isLoading);
     let {id} = useParams();
     let [review , setReview] = useState({
         comment: "",
@@ -44,6 +45,8 @@ function ShowPage() {
         let {message , success} = result;
         if(!success){
             handleSuccess(message)
+            setReview({comment: "", rating: "1" })
+            
         //    setTimeout(()=> {
         //          setReview({comment: "", rating: "1" })
         //         window.location.reload();
@@ -83,13 +86,15 @@ function ShowPage() {
     })
 }
     return (
-        <>
-        {showCartItemStatus && 
+
+       
+        <div className='flex-grow-1'>
+        {isLoading ? <>Loading</> : showCartItemStatus && 
         <div className={`${isPhone ? 'container-fluid' : 'container'} flex-grow-1`}>
              <Nav />
             <h1 className='text-center fs-1 pb-3 fw-700 border-bottom' style={{fontFamily:'Monsterrat' , textDecorationLine:'underline', textDecorationColor:'lightgrey', textUnderlineOffset:'5px'}}>Plants</h1>
             <div className='row' >
-                <div className='col-12 col-md-12 col-lg-4 mt-2' style={{maxWidth: '80vw' , maxHeight:'80vh',  position : isMedium ? 'initial' : 'sticky' , left:'1rem' , top:'5rem', margin: isMedium ? 'auto':''}}>
+                <div className='col-12 col-md-12 col-lg-4 mt-2' style={{maxWidth: '80vw' , maxHeight:'90vh',  position : isMedium ? 'initial' : 'sticky' , left:'1rem' , top:'5rem', margin: isMedium ? 'auto':''}}>
                     <img src={'/'+info.imageUrl} className='img-fluid p-2' style={{height: isPhone ? '' : '40rem ' , marginTop: isPhone ? '':'3rem' , borderRadius:'20px'}}></img>
                 </div>
                 <div className='col-lg-1'></div>
@@ -173,7 +178,9 @@ function ShowPage() {
             <ToastContainer />
         </div>
                 }
-                </>
+               
+                </div>
+                
     )
 }
 

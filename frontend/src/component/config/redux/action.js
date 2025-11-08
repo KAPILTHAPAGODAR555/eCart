@@ -216,3 +216,69 @@ try {
         
     }
 )
+
+export const showOrders = createAsyncThunk(
+    "user/getOrders",
+    async(_ , thunkApi) => {
+    const token  = Cookie.get('token');
+    const configHeaders = {
+        headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+        }
+    }
+        try {
+            console.log("hello");
+            let res = await client.get(`/order/show` , configHeaders , {withCredentials: true});
+            console.log(res);
+            return thunkApi.fulfillWithValue(res.data);
+        } catch (error) {
+            return thunkApi.rejectWithValue(error.res.data);
+        }  
+
+    }
+)
+
+export const placedOrder = createAsyncThunk(
+    "user/placedOrder",
+    async(element , thunkApi) => {
+        const token  = Cookie.get('token');
+    const configHeaders = {
+        headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+        }
+    }
+    try {
+     
+        let res = await client.post(`/order`, {
+            data : element.data,
+             info : element.info,
+             sum : element.sum
+            }, configHeaders , {withCredentials : true} )
+       console.log(res);
+        return thunkApi.fulfillWithValue(res.data);
+        
+    } catch (error) {
+       return thunkApi.rejectWithValue(error.response.data);
+    }
+      
+
+    }
+)
+
+export const singleProductBuy = createAsyncThunk(
+    "user/singleProduct",
+    async (element , thunkApi) => {
+           const token  = Cookie.get('token');
+    const configHeaders = {
+        headers: {
+        'Authorization' : `Bearer ${token ? token : ''}`
+        }
+    }
+    try {
+        let res = await client.get(`/product/buy/${element.id}` , configHeaders , {withCredentials: true});
+        return thunkApi.fulfillWithValue(res.data);
+    } catch (error) {
+        return thunkApi.rejectWithValue(error.response.data);
+    }
+    }
+)

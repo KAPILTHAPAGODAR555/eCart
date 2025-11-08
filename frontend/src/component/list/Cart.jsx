@@ -61,7 +61,7 @@ function Cart() {
       {/* // <h4 className='text-center m-3'>Summary</h4> */}
       <div className='container '>
         <div className='d-flex flex-column align-items-center justify-content-center mt-2'>
-        <Link className='btn btn-primary w-50' to={`/buy`}>Checkout</Link>
+        <Link className='btn btn-primary w-50' to={`/buy/cart`}>Checkout</Link>
         <Link to='/' style={{textDecoration: 'none'}}>
         <p className = 'fs-5 fw-600' style={{fontFamily: 'monsterrat' , color:'#053265ff'}}>or Continue Shopping</p>
         </Link>
