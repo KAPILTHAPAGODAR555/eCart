@@ -15,6 +15,7 @@ import { addReview, AddToCart, deleteReview, showProduct } from '../config/redux
 import { handleSuccess } from '../../util/util';
 import { unwrapResult } from '@reduxjs/toolkit';
 import Footer from '../Footer';
+import CircularLoader from '../../util/Loader';
 
 function ShowPage() {
     let totalRating = 0;
@@ -89,7 +90,10 @@ function ShowPage() {
 
        
         <div className='flex-grow-1'>
-        {isLoading ? <>Loading</> : showCartItemStatus && 
+        {isLoading ? 
+        <div style={{display: 'flex', alignItems:'center' , justifyContent: 'center', marginTop:'15rem'}}>
+            <CircularLoader />
+        </div>: showCartItemStatus && 
         <div className={`${isPhone ? 'container-fluid' : 'container'} flex-grow-1`}>
              <Nav />
             <h1 className='text-center fs-1 pb-3 fw-700 border-bottom' style={{fontFamily:'Monsterrat' , textDecorationLine:'underline', textDecorationColor:'lightgrey', textUnderlineOffset:'5px'}}>Plants</h1>

@@ -10,6 +10,7 @@ import Cookie from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { showCart } from '../config/redux/action';
+import CircularLoader from '../../util/Loader';
 
 
 const token  = Cookie.get('token');
@@ -28,16 +29,7 @@ function Cart() {
     },[])
   return (
     // data.length == 0  || !user.status?  <div className='container flex-grow-1 mb-5'>
-      !cartItemsStatus ?  <div className='container flex-grow-1 mb-5'>
-    <Nav />
-    <div className='d-flex flex-column align-items-center justify-content-center mt-5'>
-    <h1 style={{color: 'darkgray' , fontFamily:'Monsterrat'}} className='m-2'>Empty Cart</h1>
-    <ShoppingCartIcon style={{color : 'orange' , width:'5rem' , height:'5rem'}}  className='m-2'/>
-    <Link to ='/' style={{textDecoration: 'none'}}>
-     <p className = 'fs-3 fw-600 text-center m-2' style={{fontFamily: 'monsterrat' , color:'#053265ff'}}>Continue Shopping</p>
-    </Link>
-    </div>
-    </div> :
+    cartItemsStatus && cartItems.length > 0 ? 
     <div className='container flex-grow-1 mb-5'>
     <Nav />
 
@@ -70,6 +62,16 @@ function Cart() {
      </div>
      </div>
     </div>
+    :  <div className='container flex-grow-1 mb-5'>
+    <Nav />
+    <div className='d-flex flex-column align-items-center justify-content-center mt-5'>
+    <h1 style={{color: 'darkgray' , fontFamily:'Monsterrat'}} className='m-2'>Empty Cart</h1>
+    <ShoppingCartIcon style={{color : 'orange' , width:'5rem' , height:'5rem'}}  className='m-2'/>
+    <Link to ='/' style={{textDecoration: 'none'}}>
+     <p className = 'fs-3 fw-600 text-center m-2' style={{fontFamily: 'monsterrat' , color:'#053265ff'}}>Continue Shopping</p>
+    </Link>
+    </div> 
+    </div>  
   )
 }
 

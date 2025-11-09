@@ -8,13 +8,15 @@ import Nav from '../Nav';
 import {useSelector , useDispatch} from 'react-redux'
 import OrderTracker from './OrderTracker';
 import { getAllProduct } from '../config/redux/action';
+import CircularLoader from '../../util/Loader';
 function Front() {
-   const {items , itemsStatus} = useSelector(state => state.auth)
+   const {items , itemsStatus , frontLoading} = useSelector(state => state.auth)
    const  dispatch = useDispatch();
   useEffect(()=> {
      dispatch(getAllProduct())
   }, [])
   return (
+    !frontLoading ?
     <div className='container flex-grow-1'>
       <Nav />
       <h1 className='text-center' style={{fontFamily: 'Roboto'}}>eCart</h1>
@@ -27,7 +29,9 @@ function Front() {
         )
        })}
      </div>
-    </div>
+    </div> : <div className='container flex-grow-1' style={{display: 'flex', alignItems:'center' , justifyContent: 'center', marginTop:'15rem'}}>
+                <CircularLoader />
+            </div>
   )
 }
 

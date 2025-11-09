@@ -8,6 +8,7 @@ import OrderTracker from './OrderTracker'
 import { useDispatch, useSelector } from 'react-redux'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { showOrders } from '../config/redux/action'
+import CircularLoader from '../../util/Loader'
 
 function Order() {
   let trackMap = {
@@ -22,12 +23,13 @@ function Order() {
     'Delivered' :'#28A745'
   }
     let navigate = useNavigate();
-    const {orders , ordersStatus} = useSelector((state) => state.auth);
+    const {orders , ordersStatus, ordersLoading} = useSelector((state) => state.auth);
     const dispatch = useDispatch();
     useEffect(()=> {
         dispatch(showOrders());
     },[])
   return (
+   !ordersLoading ?
     <div className='flex-grow-1'>
       <Nav />
       <div className='container'>
@@ -58,7 +60,9 @@ let DateString = element.createdAt.toString();
 })}
           
       </div>
-    </div>
+    </div> : <div className='flex-grow-1' style={{display: 'flex', alignItems:'center' , justifyContent: 'center', marginTop:'15rem'}}>
+                <CircularLoader />
+            </div>
   )
 }
 

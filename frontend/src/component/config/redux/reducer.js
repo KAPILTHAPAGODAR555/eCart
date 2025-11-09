@@ -14,10 +14,12 @@ const initialState = {
      cartItems: [],
      cartItemsStatus: false,
      cartCount: 0,
+     frontLoading: false,
      showCartItem: {},
      showCartItemStatus: false,
      orders: [],
      ordersStatus: false,
+     ordersLoading: false,
      singleProduct: [],
      singleProductStatus : false
 }
@@ -72,16 +74,19 @@ export const authSlice = createSlice({
         .addCase(getAllProduct.pending , (state) => {
             state.itemsStatus = false,
             state.message = "Loading...",
-            state.isError = false
+            state.isError = false,
+            state.frontLoading = true
         })
         .addCase(getAllProduct.rejected , (state , action) => {
             state.itemsStatus = false,
             state.isError = true,
-            state.message = action.payload.message
+            state.message = action.payload,
+            state.frontLoading = false
         })
         .addCase(getAllProduct.fulfilled ,(state , action) => {
             state.items = action.payload.items,
-            state.itemsStatus = true
+            state.itemsStatus = true,
+            state.frontLoading = false
         })
         .addCase(showCart.rejected , (state , action) => {
             state.cartItemsStatus = action.payload.status
@@ -111,14 +116,17 @@ export const authSlice = createSlice({
         .addCase(showOrders.fulfilled , (state , action) => {
             state.orders = action.payload.info,
             state.ordersStatus = true
-            // state.isLoading = false
+            state.ordersLoading = false
         })
         .addCase(showOrders.rejected , (state , action) => {
-            state.ordersStatus = false
+            state.ordersStatus = false,
+            state.ordersLoading = false
             
         })
-        .addCase(showOrders.pending , (state , action) => {
-            state.isError = true
+        .addCase(showOrders.pending, (state , action) => {
+            state.ordersStatus = false,
+            state.ordersLoading = true
+            
         })
          .addCase(singleProductBuy.rejected , (state , action) => {
             state.singleProductStatus = action.payload.status
