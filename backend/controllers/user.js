@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt');
 
 module.exports.signUp = async(req , res , next)=> {
     let {email , password} = req.body;
-    console.log(email);
+    // console.log(email);
     // console.log(req.body);
     let existingUser = await userModel.findOne({email});
     if(existingUser){

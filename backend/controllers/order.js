@@ -4,7 +4,7 @@ const { joiOrderSchema } = require("../util/joiSecure");
 module.exports.orderShow =  async(req , res)=> {
     // let {id} = req.params;
     let id = req.user;
-    console.log(id);
+    // console.log(id);
     try {
        let order = await orderModel.find({userId : id}).populate('tracking_history')
     // console.log(userId.cart);
@@ -20,7 +20,7 @@ module.exports.orderTrack = async(req , res) => {
     orderTrack.Currentstatus = info.status;
     orderTrack.tracking_history.push(info);
     orderTrack.save();
-    return res.json({status: true , message: "got"});
+    return res.json({status: true , message: "update successfully"});
 }
 
 module.exports.orderFetch = async(req , res) => {

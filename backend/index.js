@@ -37,69 +37,6 @@ async function main() {
     await mongoose.connect(MONGO_URL);
 }
 app.get("/" , async(req , res) => {
-    let data = [
-  {
-    "name": "Fresh Red Apple",
-    "description": "Crisp and juicy red apples, sourced directly from local orchards. Perfect for a healthy snack.",
-    "price": 120,
-    "unit": "kg",
-    "category": "Fruits",
-    "reviews": [],
-    "imageUrl": "aloe-vera.jpg",
-    "stock": 150,
-    "discount": 15,
-    "originalPrice": 141.18,
-    "originPlace": "Himachal Pradesh",
-    "createdAt": "2025-10-10T12:50:45.123Z",
-    "updatedAt": "2025-10-10T12:50:45.123Z"
-  },
-  {
-    "name": "Organic Spinach",
-    "description": "A fresh bunch of leafy green organic spinach, rich in iron and vitamins.",
-    "price": 45,
-    "unit": "bunch",
-    "category": "Vegetables",
-    "reviews": [],
-    "imageUrl": "aloe-vera.jpg",
-    "stock": 80,
-    "discount": 10,
-    "originalPrice": 50.00,
-    "originPlace": "Punjab",
-    "createdAt": "2025-10-10T12:51:20.456Z",
-    "updatedAt": "2025-10-10T12:51:20.456Z"
-  },
-  {
-    "name": "Farm Fresh Eggs",
-    "description": "Pack of 12 farm-fresh brown eggs, high in protein.",
-    "price": 90,
-    "unit": "piece",
-    "category": "Dairy & Eggs",
-    "reviews": [],
-    "imageUrl": "aloe-vera.jpg",
-    "stock": 200,
-    "discount": 5,
-    "originalPrice": 94.74,
-    "originPlace": "Punjab",
-    "createdAt": "2025-10-10T12:52:05.789Z",
-    "updatedAt": "2025-10-10T12:52:05.789Z"
-  },
-  {
-    "name": "Premium Almonds",
-    "description": "250g pack of high-quality, crunchy almonds. A great source of energy.",
-    "price": 350,
-    "unit": "g",
-    "category": "Dry Fruits",
-    "reviews": [],
-    "imageUrl": "aloe-vera.jpg",
-    "stock": 100,
-    "discount": 20,
-    "originalPrice": 437.50,
-    "originPlace": "California",
-    "createdAt": "2025-10-10T12:53:10.912Z",
-    "updatedAt": "2025-10-10T12:53:10.912Z"
-  }
-]
-await productModel.insertMany(data);
 res.send("hello from eCart");
 });
 app.use("/user" , UserRouter);

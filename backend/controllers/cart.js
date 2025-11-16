@@ -4,8 +4,8 @@ const productModel = require("../models/productModel");
 
 
 module.exports.cartAdd = async(req , res)=> {
-    console.log(req.user);
-    console.log("hello");
+    // console.log(req.user);
+    // console.log("hello");
 let {productId , userId} = req.params;
 console.log(productId);
 try {
@@ -25,7 +25,7 @@ res.status(200).json({status: true , message: "Product added successfully in the
 
 module.exports.updateCart = async(req , res) => {
     let {cart} = req.body;
-    console.log(cart);
+    // console.log(cart);
     // console.log(req.body);
     // let {userId} = req.params;
     let userId = req.user;
@@ -37,7 +37,7 @@ module.exports.updateCart = async(req , res) => {
             }
     })
     
-    console.log(user.cart);
+    // console.log(user.cart);
     user.save();
     res.send("done");
 }

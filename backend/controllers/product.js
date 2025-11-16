@@ -9,7 +9,7 @@ const { joiReviewSchema } = require("../util/joiSecure");
 module.exports.addReview = async(req , res)=> {
     let {id} =  req.params;
     let user = req.user;
-    console.log(user);
+    // console.log(user);
     let {info} = req.body;
     joiReviewSchema.validate(info);
    try {
