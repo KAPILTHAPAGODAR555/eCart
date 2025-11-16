@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import { handleSuccess } from '../../util/util';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
+import { trackOrders } from '../config/redux/action';
+import { ToastContainer } from 'react-toastify';
 function OrderEach({order , orderId}) {
+  let dispatch = useDispatch();
     let [info , setInfo] = useState({
         location: order.location,
         status:order.status,
@@ -8,11 +14,13 @@ function OrderEach({order , orderId}) {
     });
     const onClickHandle = async(e) => {
         e.preventDefault();
-        // console.log(info);
         try {
-            let res = await axios.post(`http://localhost:8000/order/track/`,{ info , orderId}, {withCredentials : true});
-           let {message , status} = res.data;
-           console.log(message);
+            let result = unwrapResult(await dispatch(trackOrders({info , orderId})));
+           let {message , status} = result;
+           console.log(status);
+           if(status){
+            handleSuccess(message);
+           }
         } catch (error) {
             console.log(error);
         }
@@ -45,6 +53,7 @@ function OrderEach({order , orderId}) {
       <button className='btn btn-primary w-25' onClick={onClickHandle}>Save</button>
       </div>
 </form>
+<ToastContainer />
 </div>
   )
 }

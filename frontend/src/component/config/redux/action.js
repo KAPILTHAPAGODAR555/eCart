@@ -282,3 +282,16 @@ export const singleProductBuy = createAsyncThunk(
     }
     }
 )
+
+export const trackOrders = createAsyncThunk(
+    "user/gettracks",
+    async(element, thunkApi) => {
+        try {
+         let res = await client.post(`/order/track/`,{info: element.info , orderId: element.orderId},{withCredentials : true});
+            return thunkApi.fulfillWithValue(res.data);
+        } catch (error) {
+            return thunkApi.rejectWithValue(error.res.data);
+        }  
+
+    }
+)

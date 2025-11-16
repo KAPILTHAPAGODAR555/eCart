@@ -3,16 +3,10 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import pic from './pic.jpg'
 import { Link, useNavigate } from 'react-router';
-import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { Container } from '@mui/material';
-import { useEffect , useState } from 'react';
 import './list.css'
-import { configHeaders } from '../config/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { AddToCart } from '../config/redux/action';
@@ -62,7 +56,7 @@ function Product({element , cart}) {
       </CardContent>
       <CardActions className='d-flex align-items-center justify-content-center'>
         <Link to = {`buy/${element._id}`}  className='btn p-2 buy w-25 '>Buy</Link>
-        {!cart && <button  className='btn p-2 cart w-25' onClick={handleCart}>+cart</button>}
+        {auth.isLogin && <button  className='btn p-2 cart w-25' onClick={handleCart}>+cart</button>}
         <Link to={`/show/${element._id}`}>
         <button  className='btn p-2 w-100 details'>View Details</button>
         </Link>

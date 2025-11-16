@@ -36,10 +36,10 @@ function App() {
      <Route path='/about'   element= {<About />} />
      <Route path='/signup'  element={<Signup />} />
      <Route path='/login'   element={<Login />} />
-     <Route path='/show/:id'element={<ShowPage  />} />
+     <Route path='/show/:id'element={<ProtectedRoute><ShowPage  /></ProtectedRoute>} />
      <Route path='/cart'    element={<ProtectedRoute><Cart /></ProtectedRoute>} />
      <Route path='/logout'  element={<Logout />} />
-     <Route path='/buy/:id' element={<Buy />} />
+     <Route path='/buy/:id' element={<ProtectedRoute><Buy /></ProtectedRoute>} />
      <Route path = '/order' element={<Order />} /> 
      <Route path = '/admin' element={<AdminFront />} /> 
      <Route path = '/*' element={<PageNotFound />} />
