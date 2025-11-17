@@ -10,7 +10,7 @@ module.exports.signUp = async(req , res , next)=> {
     // console.log(req.body);
     let existingUser = await userModel.findOne({email});
     if(existingUser){
-        return res.status(400).json({message: "User already exist" , success : false});
+        return res.status(400).json({message: "Email exist" , success : false});
     }
     let {info }= req.body;
     joiUserSchema.validate(info);
@@ -21,7 +21,7 @@ module.exports.signUp = async(req , res , next)=> {
         withCredentials : true,
         httpOnly: false,
     })
-    res.status(200).json({message : "User signed successfully" , success : true , id:newUser._id});
+    res.status(200).json({message : "SignIn successfully , Welcome to eCart" , success : true , id:newUser._id});
     next();
 }
 
@@ -29,20 +29,20 @@ module.exports.login = async(req , res , next) => {
     let info = req.body;
     let userExist = await userModel.findOne({email : info.email});
     if(!userExist){
-        return res.json({message : "You are not authenticate" , success : false});
+        return res.json({message : "You are not authenticate , try again" , success : false});
     }
 
     let auth =  bcrypt.compare(info.password , userExist.password);
     if(!auth){
         console.log(info.password);
-        return res.json({message : "You are authentication wrong" , success : false});
+        return res.json({message : "You are authentication , try again" , success : false});
     }
     let token = createSecretToken(userExist._id);
     res.cookie("token" , token , {
         withCredentials : true, 
         httpOnly: false
     })
-    res.status(200).json({message : "You are aunthenticate" , success: true , id:userExist._id});
+    res.status(200).json({message : "You are aunthenticate , welcome to eCart" , success: true , id:userExist._id});
     next();
 }
 

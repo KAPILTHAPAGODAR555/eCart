@@ -7,7 +7,7 @@ module.exports.cartAdd = async(req , res)=> {
     // console.log(req.user);
     // console.log("hello");
 let {productId , userId} = req.params;
-console.log(productId);
+// console.log(productId);
 try {
    let product = await productModel.findById(productId);
 let user = await userModel.findById(req.user);
