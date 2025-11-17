@@ -98,7 +98,7 @@ function ShowPage() {
              <Nav />
             <h1 className='text-center fs-1 pb-3 fw-700 border-bottom' style={{fontFamily:'Monsterrat' , textDecorationLine:'underline', textDecorationColor:'lightgrey', textUnderlineOffset:'5px'}}>Plants</h1>
             <div className='row' >
-                <div className='col-12 col-md-12 col-lg-4 mt-2' style={{maxWidth: '80vw' , maxHeight:'90vh',  position : isMedium ? 'initial' : 'sticky' , left:'1rem' , top:'5rem', margin: isMedium ? 'auto':''}}>
+                <div className='col-12 col-md-12 col-lg-4 mt-2' style={{maxWidth: '80vw' , maxHeight:'100vh',  position : isMedium ? 'initial' : 'sticky' , left:'1rem' , top:'5rem', margin: isMedium ? 'auto':''}}>
                     <img src={'/'+info.imageUrl} className='img-fluid p-2' style={{height: isPhone ? '' : '40rem ' , marginTop: isPhone ? '':'3rem' , borderRadius:'20px'}}></img>
                 </div>
                 <div className='col-lg-1'></div>

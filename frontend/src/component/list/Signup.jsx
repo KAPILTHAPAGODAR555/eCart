@@ -44,10 +44,12 @@ function Signup() {
     try {
       const resultData = await dispatch(register(info));
       const currentData = unwrapResult(resultData);
+      if(currentData.success){
       handleSuccess(currentData.message);
        setTimeout(()=> {
           navigate("/");
         }, 3000);
+      }
       
     } catch (error) {
       handleError(error.message);
@@ -61,10 +63,10 @@ function Signup() {
   })
   }
   return (
-    <div className='container p-5'>
+    <div className='container p-5 flex-grow-1'>
         <div className='row p-4'>
             <div className='col-12 col-md-12 col-lg-5'>
-                <h1 className='text-center mt-3 mb-5' style={{fontFamily: 'montserrat'}}>SigUp Page</h1>
+                <h1 className='text-center mt-3 mb-5' style={{fontFamily: 'montserrat'}}>SigUp To eCart</h1>
             <form>
                 <div className='row '>
                 <div class="form-group col-12 col-md-6 col-lg-6 mb-3">
@@ -92,7 +94,7 @@ function Signup() {
                 </div>
                 <div class="form-check mb-3">
                   <input type="checkbox" class="form-check-input" id="exampleCheck1" name='check' checked = {info.check} onChange={(e) => setInfo({...info, check: e.target.checked}) } />
-                  <label class="form-check-label" for="exampleCheck1"><Typography variant='h6'>I Agree <a>Terms & conditions</a></Typography></label>
+                  <label class="form-check-label" for="exampleCheck1"><Typography variant='h6'>I Agree <a href='#'>Terms & conditions</a></Typography></label>
                 </div>
                 <div className='d-flex flex-column  align-items-center justify-content-center'>
                     <button type="submit" class="btn btn-primary w-50" onClick={clickHandle}>Submit</button>

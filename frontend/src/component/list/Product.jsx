@@ -19,11 +19,11 @@ function Product({element , cart}) {
     const handleCart = async() => {
         try {    
            let result = unwrapResult(await dispatch(AddToCart({id : element._id})));  
-           let {status: success , message} = result;  
-           setTimeout(() => {
-                if(success)handleSuccess(message);
-                else handleError(message);
-           }, 2000);   
+          //  let {status: success , message} = result;  
+          // //  setTimeout(() => {
+          //       if(!success)handleError(message);
+          //       // else handleError(message);
+          //  }, 2000);   
            
         } catch (error) {
                 console.log(error);

@@ -160,7 +160,7 @@ sum += element.product.price * element.qty;
     <div class="form-check mb-2 mt-3">
       <input class="form-check-input" type="checkbox" id="check" checked = {info.check}   onChange={(e) => setInfo({...info , check: !info.check})}/>
       <label class="form-check-label fs-5" for="check">
-        I Agree <a>Terms & Conditions</a>
+        I Agree <a href='#'>Terms & Conditions</a>
       </label>
     </div>
   </div>

@@ -12,6 +12,11 @@ function Logout() {
     window.location.reload();
      navigate("/");
     })
+    return(
+        <div className='flex-grow-1'>
+
+        </div>
+    )
    
 }
 

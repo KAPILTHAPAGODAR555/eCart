@@ -32,10 +32,13 @@ function Login() {
     }
     try {
       let currentResult = unwrapResult(await dispatch(login(info)));
+      if(currentResult.success){
       handleSuccess(currentResult.message);
          setTimeout(()=> {
            navigate("/");
-        }, 3000);
+        }, 3000);}else{
+          handleError(currentResult.message);
+        }
     } catch (error) {
       handleError(error.message);
     }
@@ -46,7 +49,7 @@ function Login() {
         
         <div className='row p-4'>
             <div className='col-12 col-md-12 col-lg-6'>
-                <h1 className='text-center mt-3' style={{fontFamily: 'montserrat'}}>Login Page</h1>
+                <h1 className='text-center mt-3' style={{fontFamily: 'montserrat'}}>Login To eCart</h1>
             <form>
                 <div class="form-group mb-3">
                   <label for="exampleInputEmail1">Email address</label>
