@@ -37,21 +37,12 @@ eCart is a full-featured e-commerce web application built using the MERN stack (
 * **Authentication:** JSON Web Tokens (JWT)
 * **State Management:** React Context API (or Redux)
 
-## Screenshots
-* Home Page (Product Listing)
-* Product Details Page (with Reviews)
-* Sign Up & Login
-* Shopping Cart
-* Checkout & Address Form
-* My Orders (Order History)
-* About Us Page
-* Report Issue Form
 
 ## ⚙️ How to Run Locally
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/your-username/eCart.git](https://github.com/your-username/eCart.git)
+    git clone https://github.com/KAPILTHAPAGODAR555/eCart.git
     cd eCart
     ```
 
