@@ -82,5 +82,5 @@ eCart is a full-featured e-commerce web application built using the MERN stack (
         ```
     * **Run the frontend (from `client` folder):**
         ```bash
-        npm start
+        npm run dev
         ```
