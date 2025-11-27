@@ -1,5 +1,7 @@
 const contactModel = require("../models/contactModel");
+const profileModel = require("../models/profileModel");
 const userModel = require("../models/userModel");
+const { cloudinary } = require("../util/cloudinaryConfig");
 const { joiUserSchema, joiContactSchema } = require("../util/joiSecure");
 const { createSecretToken } = require("../util/secretToken");
 const bcrypt = require('bcrypt');
@@ -56,4 +58,35 @@ module.exports.contact = async(req , res)=> {
         res.json({message : "There is issue in submitting query ,please try later" , succes: false , });
     }
     
+}
+
+module.exports.updateProfilePhoto = async(res,req) =>  {
+    let id = req.user;
+    if(!req.file)return res.status(404).json({message: "Error not found"});
+    try {
+        const userProfile = await profileModel.findOne({userInfo: id});
+        let url = "";
+        const uploadStream = cloudinary.uploader.upload_stream({resource_type: 'auto'} ,async(err , data) => {
+            if(err)return res.status(401).json({message: "profile not update"});
+            url = data.secure_url;
+        })
+        uploadStream(req.file.buffer);
+        userProfile.profilePicture = url == "" ? userProfile.profilePicture : url;
+        await userProfile.save();
+        return res.status(200).json({message: "Profile update successfully"});
+    } catch (error) {
+        return res.json({message: "Error in updating"});
+    }
+}
+
+module.exports.getProfileInfo = async(req , res) => {
+    let id = req.user;
+
+    try {
+        const profileInfo = await profileModel.findOne({userInfo: id}).populate('userInfo' , 'email username phone');
+
+        return res.status(200).json({data: profileInfo});
+    } catch (error) {
+        return res.status(400).json({message: "error in sending the data"});
+    }
 }

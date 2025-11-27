@@ -30,6 +30,7 @@ module.exports.joiReviewSchema = Joi.object({
 })
 
 module.exports.joiUserSchema = Joi.object({
+    name : Joi.string().alphanum().required(),
     username : Joi.string().alphanum().required(),
     email: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } }).required(),
     phone: Joi.string().regex(/^\d{7,15}$/).required(),
