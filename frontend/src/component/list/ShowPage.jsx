@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import pic from './pic.jpg'
-import Typography from '@mui/material/Typography';
 import { getPaginationItemUtilityClass, useMediaQuery } from '@mui/material';
-import { green } from '@mui/material/colors';
 import './list.css'
 import {  useParams } from 'react-router';
-import axios from 'axios';
 import { ToastContainer, toast } from "react-toastify";
-import root from './root.png'
 import { useNavigate, Link } from 'react-router';
 import Nav from '../Nav';
 import { useDispatch, useSelector } from 'react-redux';
 import { addReview, AddToCart, deleteReview, showProduct } from '../config/redux/action';
 import { handleSuccess } from '../../util/util';
 import { unwrapResult } from '@reduxjs/toolkit';
-import Footer from '../Footer';
 import CircularLoader from '../../util/Loader';
 
 function ShowPage() {

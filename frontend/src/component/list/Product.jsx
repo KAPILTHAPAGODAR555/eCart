@@ -50,9 +50,6 @@ function Product({element , cart}) {
           </h3>
          {element.discount != 0 &&  <h6 className='text-success mx-1 fs-6 d-inline bg-success text-white p-2' style={{borderRadius:'5px'}}>{element.discount}% off</h6>}
         </div>
-        {/* <Typography variant="h6" sx={{ color: 'text.primary' , marginTop: '1rem'}}>
-          ₹{element.price}
-        </Typography> */}
       </CardContent>
       <CardActions className='d-flex align-items-center justify-content-center'>
         <Link to = {`buy/${element._id}`}  className='btn p-2 buy w-25 '>Buy</Link>
