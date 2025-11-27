@@ -1,7 +1,6 @@
 import React from 'react'
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
-import pic from './pic.jpg'
 
 function RightSection({description , img , heading}) {
   return (

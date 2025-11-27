@@ -1,12 +1,8 @@
 import React from 'react'
 import Product from './Product'
-// import data from './data'
-import axios from 'axios';
 import { useEffect } from 'react';
-import { useState } from 'react';
 import Nav from '../Nav';
 import {useSelector , useDispatch} from 'react-redux'
-import OrderTracker from './OrderTracker';
 import { getAllProduct } from '../config/redux/action';
 import CircularLoader from '../../util/Loader';
 function Front() {

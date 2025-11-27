@@ -18,6 +18,7 @@ import ProtectedRoute from './component/ProtectedRoute.jsx'
 import Buy from './component/list/Buy.jsx'
 import PageNotFound from './component/list/PageNotFound.jsx'
 import AdminFront from './component/admin/AdminFront.jsx'
+import UserProfile from './component/user/UserProfile.jsx'
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
      <Route path = '/order' element={<Order />} /> 
      <Route path = '/admin' element={<AdminFront />} /> 
      <Route path = '/*' element={<PageNotFound />} />
+     <Route path='/user/profile' element={<UserProfile />} />
       </Routes>
     <Footer />
     </div>
