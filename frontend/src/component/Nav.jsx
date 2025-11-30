@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { useState , useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -24,7 +23,7 @@ import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import LogoutIcon from '@mui/icons-material/Logout';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
-
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import Cookie from 'js-cookie';
 import { useNavigate } from 'react-router';
@@ -32,9 +31,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showCart } from './config/redux/action';
 
 const drawerWidth = 240;
-let navItems = ['About', 'Contact' , 'Signup'];
+let navItems = ['About', 'Contact', 'Signup'];
 
-  
+
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -46,52 +45,50 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 const map = {
   'About': '/about',
-  'Contact' : '/contact',
-  'Signup' : '/signup',
-  'cart' :'/cart',
-  'logout' :'/logout',
-  'order' :'/order'
+  'Contact': '/contact',
+  'Signup': '/signup',
+  'cart': '/cart',
+  'logout': '/logout',
+  'order': '/order',
+  'profile': '/profile'
 }
 const navigationIcons = {
   'About': <InfoIcon />,
   'Contact': <ContactPhoneIcon />,
   'Signup': <PersonAddIcon />,
   'logout': <LogoutIcon />,
-  'order': <ShoppingBagIcon />
+  'order': <ShoppingBagIcon />,
+  'profile': <AccountCircleIcon />
 };
 
 
 export default function Nav(props) {
   const { window } = props;
   let navigate = useNavigate();
-  const {isLogin  , cartItemsStatus , cartCount} = useSelector(state => state.auth); 
+  const { isLogin, cartItemsStatus, cartCount } = useSelector(state => state.auth);
   const [mobileOpen, setMobileOpen] = React.useState(false);
-   const [user , isUser] = useState({
-          status: false,
-          id: 0
-      });
-      const handleLogout = () => {
-        
-         let token = Cookie.get('token');
-            if(token){
-                Cookie.remove('token');
-            }
-             isLogin = false;
-             navigate("/");
-      }
-      const dispatch = useDispatch();
-      const [ccart , setCart] = useState([]);
-    useEffect(()=> {
-      dispatch(showCart());
-    }, [])
-//   if(user.status){
-//     console.log(user.status);
-//   navItems =  [  'order' , 'cart', 'About', 'Contact' , 'logout'];
-// }
-  if(isLogin){
+  const [user, isUser] = useState({
+    status: false,
+    id: 0
+  });
+  const handleLogout = () => {
+
+    let token = Cookie.get('token');
+    if (token) {
+      Cookie.remove('token');
+    }
+    isLogin = false;
+    navigate("/");
+  }
+  const dispatch = useDispatch();
+  const [ccart, setCart] = useState([]);
+  useEffect(() => {
+    dispatch(showCart());
+  }, [])
+  if (isLogin) {
     console.log(user.status);
-  navItems =  [  'order' , 'cart', 'About', 'Contact' , 'logout'];
-}
+    navItems = ['order', 'cart', 'About', 'Contact', 'logout', 'profile'];
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -100,17 +97,17 @@ export default function Nav(props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Link to='/'>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        eCart
-      </Typography>
-    </Link>
+        <Typography variant="h6" sx={{ my: 2 }}>
+          eCart
+        </Typography>
+      </Link>
       <Divider />
       <List>
         {navItems.map((item) => (
 
           <ListItem key={item} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-             {item == 'logout'? <ListItemText primary={item} onClick={handleLogout} />  : <Link to={map[item]} style={{textDecoration: 'none' , color: 'black'}}>
+              {item == 'logout' ? <ListItemText primary={item} onClick={handleLogout} /> : <Link to={map[item]} style={{ textDecoration: 'none', color: 'black' }}>
                 <ListItemText primary={item} />
               </Link>}
             </ListItemButton>
@@ -136,27 +133,27 @@ export default function Nav(props) {
           >
             <MenuIcon />
           </IconButton>
-          
+
           <Typography
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <Link to='/' style={{textDecoration: 'none' , color: 'white'}}>
-            eCart
+            <Link to='/' style={{ textDecoration: 'none', color: 'white' }}>
+              eCart
             </Link>
           </Typography>
-        
+
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
-            <Link to={map[item]}>
-              <Button key={item} sx={{ color: '#fff' }}>
-                 <StyledBadge badgeContent={item=='cart' && cartItemsStatus ? cartCount : 0} color="secondary">
-                {item == 'cart' ? <ShoppingCartIcon /> : navigationIcons[item]}
-                </StyledBadge>
-           
-              </Button>
-             </Link>
+              <Link to={map[item]}>
+                <Button key={item} sx={{ color: '#fff' }}>
+                  <StyledBadge badgeContent={item == 'cart' && cartItemsStatus ? cartCount : 0} color="secondary">
+                    {item == 'cart' ? <ShoppingCartIcon /> : navigationIcons[item]}
+                  </StyledBadge>
+
+                </Button>
+              </Link>
             ))}
           </Box>
         </Toolbar>
@@ -168,7 +165,7 @@ export default function Nav(props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },

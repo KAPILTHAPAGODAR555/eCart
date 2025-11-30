@@ -14,14 +14,3 @@ const contactSchema = new mongoose.Schema({
 )
 
 module.exports = contactSchema;
-
-
-
-/*
-username: "",
-    email: "",
-    phone: "",
-    countryCode : "",
-    issue: "No Default Selection",
-    describe: ""
-*/

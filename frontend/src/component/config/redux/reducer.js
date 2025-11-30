@@ -1,147 +1,152 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getAllProduct, login, register, showCart, showOrders, showProduct, singleProductBuy } from "./action";
+import { getAllProduct, getUserInfo, login, register, showCart, showOrders, showProduct, singleProductBuy } from "./action";
 import Cookie from 'js-cookie';
-import { act } from "react";
-const token  = Cookie.get('token');
+const token = Cookie.get('token');
 const initialState = {
     id: null,
-    isLogin: token ? true: false,
+    userInfo: {},
+    userInfoStatus: false,
+    isLogin: token ? true : false,
     message: "",
     isLoading: false,
     isError: false,
     items: [],
     itemsStatus: false,
-     cartItems: [],
-     cartItemsStatus: false,
-     cartCount: 0,
-     frontLoading: false,
-     showCartItem: {},
-     showCartItemStatus: false,
-     orders: [],
-     ordersStatus: false,
-     ordersLoading: false,
-     singleProduct: [],
-     singleProductStatus : false
+    cartItems: [],
+    cartItemsStatus: false,
+    cartCount: 0,
+    frontLoading: false,
+    showCartItem: {},
+    showCartItemStatus: false,
+    orders: [],
+    ordersStatus: false,
+    ordersLoading: false,
+    singleProduct: [],
+    singleProductStatus: false
 }
 
 export const authSlice = createSlice({
-    name:'auth',
+    name: 'auth',
     initialState,
     reducers: {
         reset: (state) => initialState,
         emptyMessage: (state) => state.message = ""
     },
     extraReducers: (builder) => {
-        builder.addCase(login.pending , (state) => {
+        builder.addCase(login.pending, (state) => {
             // state.isLoading = true,
             state.message = "loading",
-            state.isLogin = true
+                state.isLogin = true
         })
-        .addCase(login.rejected , (state) => {
-            state.message = "Authentication failed",
-            state.isError = true,
-            // state.isLoading = false,
-            state.isLogin= false
-            console.log("jello");
-        })
-        .addCase(login.fulfilled , (state , action) => {
-            state.message = action.payload.message,
-            // state.isLoading = false,
-            state.isError = false,
-            state.isLogin = action.payload.success,
-            state.id= action.payload.id
-           
-        })
-        .addCase(register.rejected , (state , action) => {
-            state.isError = true,
-            // state.isLoading = false,
-            state.isLogin = false,
-            state.message = action.payload.message
-        })
-        .addCase(register.pending , (state) => {
-            state.message = "Loading....",
-            // state.isLoading = true,
-            state.isError = false,
-            state.isLogin = false
-        })
-        .addCase(register.fulfilled , (state , action) => {
-            state.message = action.payload.message,
-            state.isError = false,
-            state.isLogin = action.payload.success,
-            // state.isLoading = false,
-            state.id= action.payload.id
-        })
-        .addCase(getAllProduct.pending , (state) => {
-            state.itemsStatus = false,
-            state.message = "Loading...",
-            state.isError = false,
-            state.frontLoading = true
-        })
-        .addCase(getAllProduct.rejected , (state , action) => {
-            state.itemsStatus = false,
-            state.isError = true,
-            state.message = action.payload,
-            state.frontLoading = false
-        })
-        .addCase(getAllProduct.fulfilled ,(state , action) => {
-            state.items = action.payload.items,
-            state.itemsStatus = true,
-            state.frontLoading = false
-        })
-        .addCase(showCart.rejected , (state , action) => {
-            state.cartItemsStatus = action.payload.status
-        })
-        .addCase(showCart.pending , (state, action) => {
-            state.isError = true
-        })
-        .addCase(showCart.fulfilled , (state , action) => {
-            state.cartItems = action.payload.info,
-            state.cartItemsStatus = action.payload.status,
-            state.cartCount = action.payload.info.length
+            .addCase(login.rejected, (state) => {
+                state.message = "Authentication failed",
+                    state.isError = true,
+                    // state.isLoading = false,
+                    state.isLogin = false
+                console.log("jello");
+            })
+            .addCase(login.fulfilled, (state, action) => {
+                state.message = action.payload.message,
+                    // state.isLoading = false,
+                    state.isError = false,
+                    state.isLogin = action.payload.success,
+                    state.id = action.payload.id
 
-        })
-        .addCase(showProduct.fulfilled , (state , action) => {
-            state.showCartItem = action.payload.data,
-            state.showCartItemStatus = true,
-            state.id= action.payload.id,
-            state.isLoading = false
-        })
-        .addCase(showProduct.rejected , (state , action) => {
-            state.showCartItemStatus = false,
-            state.isLoading = false
-        })
-        .addCase(showProduct.pending , (state , action) => {
-            state.isLoading = true
-        })
-        .addCase(showOrders.fulfilled , (state , action) => {
-            state.orders = action.payload.info,
-            state.ordersStatus = true
-            state.ordersLoading = false
-        })
-        .addCase(showOrders.rejected , (state , action) => {
-            state.ordersStatus = false,
-            state.ordersLoading = false
-            
-        })
-        .addCase(showOrders.pending, (state , action) => {
-            state.ordersStatus = false,
-            state.ordersLoading = true
-            
-        })
-         .addCase(singleProductBuy.rejected , (state , action) => {
-            state.singleProductStatus = action.payload.status
-        })
-        .addCase(singleProductBuy.pending , (state, action) => {
-            state.isError = true
-        })
-        .addCase(singleProductBuy.fulfilled , (state , action) => {
-            state.singleProduct = action.payload.info,
-            state.singleProductStatus = action.payload.status,
-            state.cartCount = action.payload.info.length
+            })
+            .addCase(register.rejected, (state, action) => {
+                state.isError = true,
+                    // state.isLoading = false,
+                    state.isLogin = false,
+                    state.message = action.payload.message
+            })
+            .addCase(register.pending, (state) => {
+                state.message = "Loading....",
+                    // state.isLoading = true,
+                    state.isError = false,
+                    state.isLogin = false
+            })
+            .addCase(register.fulfilled, (state, action) => {
+                state.message = action.payload.message,
+                    state.isError = false,
+                    state.isLogin = action.payload.success,
+                    // state.isLoading = false,
+                    state.id = action.payload.id
+            })
+            .addCase(getAllProduct.pending, (state) => {
+                state.itemsStatus = false,
+                    state.message = "Loading...",
+                    state.isError = false,
+                    state.frontLoading = true
+            })
+            .addCase(getAllProduct.rejected, (state, action) => {
+                state.itemsStatus = false,
+                    state.isError = true,
+                    state.message = action.payload,
+                    state.frontLoading = false
+            })
+            .addCase(getAllProduct.fulfilled, (state, action) => {
+                state.items = action.payload.items,
+                    state.itemsStatus = true,
+                    state.frontLoading = false
+            })
+            .addCase(showCart.rejected, (state, action) => {
+                state.cartItemsStatus = action.payload.status
+            })
+            .addCase(showCart.pending, (state, action) => {
+                state.isError = true
+            })
+            .addCase(showCart.fulfilled, (state, action) => {
+                state.cartItems = action.payload.info,
+                    state.cartItemsStatus = action.payload.status,
+                    state.cartCount = action.payload.info.length
 
-        })
+            })
+            .addCase(showProduct.fulfilled, (state, action) => {
+                state.showCartItem = action.payload.data,
+                    state.showCartItemStatus = true,
+                    state.id = action.payload.id,
+                    state.isLoading = false
+            })
+            .addCase(showProduct.rejected, (state, action) => {
+                state.showCartItemStatus = false,
+                    state.isLoading = false
+            })
+            .addCase(showProduct.pending, (state, action) => {
+                state.isLoading = true
+            })
+            .addCase(showOrders.fulfilled, (state, action) => {
+                state.orders = action.payload.info,
+                    state.ordersStatus = true
+                state.ordersLoading = false
+            })
+            .addCase(showOrders.rejected, (state, action) => {
+                state.ordersStatus = false,
+                    state.ordersLoading = false
+
+            })
+            .addCase(showOrders.pending, (state, action) => {
+                state.ordersStatus = false,
+                    state.ordersLoading = true
+
+            })
+            .addCase(singleProductBuy.rejected, (state, action) => {
+                state.singleProductStatus = action.payload.status
+            })
+            .addCase(singleProductBuy.pending, (state, action) => {
+                state.isError = true
+            })
+            .addCase(singleProductBuy.fulfilled, (state, action) => {
+                state.singleProduct = action.payload.info,
+                    state.singleProductStatus = action.payload.status,
+                    state.cartCount = action.payload.info.length
+
+            })
+            .addCase(getUserInfo.fulfilled, (state, action) => {
+                state.userInfo = action.payload,
+                    state.userInfoStatus = true
+            })
     }
 })
 
-export const {reset} = authSlice.actions;
+export const { reset } = authSlice.actions;
 export default authSlice.reducer

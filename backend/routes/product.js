@@ -1,8 +1,6 @@
 const express = require('express');
 const { addReview, deleteReview, sendData } = require('../controllers/product');
-const { joiReviewSchema } = require('../util/joiSecure');
 const router = express.Router({mergeParams: true});
-const Joi = require('joi');
 const { verfiyToken } = require('../middleware/authMiddleware');
 
 router.post("/review/:id", verfiyToken ,  addReview);

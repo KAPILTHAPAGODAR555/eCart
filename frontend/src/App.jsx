@@ -43,8 +43,9 @@ function App() {
      <Route path='/buy/:id' element={<ProtectedRoute><Buy /></ProtectedRoute>} />
      <Route path = '/order' element={<Order />} /> 
      <Route path = '/admin' element={<AdminFront />} /> 
+     <Route path='/profile' element={<UserProfile />} />
      <Route path = '/*' element={<PageNotFound />} />
-     <Route path='/user/profile' element={<UserProfile />} />
+     
       </Routes>
     <Footer />
     </div>

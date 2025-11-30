@@ -1,51 +1,52 @@
-
 .cart {
     background-color: rgb(1, 133, 1);
     transition: all 0.3s ease;
     color: white;
 }
 
-.cart:hover{
-    /*#ff7118
-    */
+.cart:hover {
     background-color: rgb(10, 60, 10);
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     color: white;
 }
+
 .buy {
     background-color: yellow;
     transition: all 0.3s ease;
 }
 
-.buy:hover{
+.buy:hover {
     background-color: #e0a800;
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.details{
+.details {
     color: white;
     background-color: #006699;
     transition: all 0.3s ease;
 }
-.details:hover{
+
+.details:hover {
     background-color: #003366;
     color: white;
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-.rating{
+
+.rating {
     color: orange;
 }
 
-.about-items span{
+.about-items span {
     color: white;
     padding: 0.5rem;
     border-radius: 10px;
     background-color: #E3EF;
 }
-.remove-btn{
+
+.remove-btn {
     border: 1px solid rgb(183, 119, 1);
     color: red;
     font-weight: 500;
@@ -53,14 +54,16 @@
     transition: 0.2s all ease-in;
 }
 
-.remove-btn:hover{
+.remove-btn:hover {
     background: orange;
     color: white;
     transform: scale(1.2);
 }
-.del-rev{
+
+.del-rev {
     transition: 0.2s all ease-in;
 }
-.del-rev:hover{
-transform: scale(1.2);
+
+.del-rev:hover {
+    transform: scale(1.2);
 }
